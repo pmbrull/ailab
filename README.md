@@ -24,6 +24,30 @@
 
 ## MLOps
 
+- [BentoML](https://www.bentoml.com/) - Deploy models as APIs
+  - [Quickstart](https://docs.bentoml.com/en/latest/get-started/quickstart.html?_gl=1*1fqas9*_gcl_au*MTM2MTE1NzEzMi4xNzExMjIxMjgx)
+
+### BentoML
+
+- [Easily deploy models as APIs](https://docs.bentoml.com/en/latest/guides/services.html)
+- [Containerize models and deploy them as images](https://docs.bentoml.com/en/latest/guides/containerization.html)
+- [Guide on testing services](https://docs.bentoml.com/en/latest/guides/testing.html)
+- [Deploy as ASGI Server](https://docs.bentoml.com/en/latest/guides/asgi.html)
+
+With LLM
+
+- [Serve LLMs](https://docs.bentoml.com/en/latest/use-cases/large-language-models/vllm.html) using `vLLM`, a high-throughput and memory-efficient inference and serving engine for LLMs
+
+CICD
+
+- [GitHub Actions](https://docs.bentoml.com/en/v1.1.11/guides/github-actions.html)
+- [Store and use custom private models models](https://docs.bentoml.org/en/latest/guides/model-store.html) - Build the model, store in S3, use it anywhere as a Service after downloading:
+  - With the Python Client `bentoml.models.import_model('s3://my_bucket/folder/my_model.bentomodel')`
+
+### BentoML - OpenLLM
+
+- [OpenLLM](https://github.com/bentoml/OpenLLM) - Operating LLMs in production
+
 ## Vector Database
 
 Vector embeddings serve as a bridge between the raw textual input and the language model’s neural network.
