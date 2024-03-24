@@ -1,0 +1,6 @@
+langchain
+openllm[mistral]
+qdrant-client
+sentence-transformers
+torch
+openmetadata-ingestion==1.3.1

@@ -11,6 +11,8 @@
   - Not aligned with used expectations: **behavioral limitation**
   - For example, a company might use **fine-tuning** to train a customer service bot to respond in a way that aligns with their brand's tone of voice, and then use a **vector database (embedding)** to provide the bot with access to their company policies and procedures.
 
+- [Context Window](https://www.hopsworks.ai/dictionary/context-window-for-llms)
+
 - [Orca outperforms GPT-4?](https://www.microsoft.com/en-us/research/project/orca/)
 
 ### Fine Tuning
@@ -47,17 +49,25 @@ CICD
 ### BentoML - OpenLLM
 
 - [OpenLLM](https://github.com/bentoml/OpenLLM) - Operating LLMs in production
+- [Building A Production-Ready LangChain Application with BentoML and OpenLLM](https://www.bentoml.com/blog/building-a-production-ready-langchain-application-with-bentoml-and-openllm)
 
 ## Vector Database
 
 Vector embeddings serve as a bridge between the raw textual input and the language model’s neural network.
 
+- [What are Vector DBs?](https://qdrant.tech/articles/what-is-a-vector-database/)
+- [What are Vector Embeddings?](https://qdrant.tech/articles/what-are-embeddings/)
 - [Choosing the Right Embedding Model: A Guide for LLM Applications](docs/Choosing the Right Embedding Model: A Guide for LLM Applications | by Ryan Nguyen | Medium.pdf)
+- [Transformers Architecture](https://arxiv.org/abs/1706.03762)
+- [Evaluate RAG Responses](https://superlinked.com/vectorhub/evaluating-retrieval-augmented-generation-a-framework-for-assessment)
 
 ### Qdrant
 
 - [Build a FAQ Chat](https://qdrant.tech/articles/faq-question-answering/)
 - [Qdrant embedding Mistral](https://qdrant.tech/documentation/embeddings/mistral/)
+- [Build your first RAG](https://www.packtpub.com/article-hub/build-your-first-rag-with-qdrant)
+- [RAG Systems Architecture](https://qdrant.tech/articles/what-is-rag-in-ai/#)
+- [From HuggingFace dataset to Qdrant vector database in 12 minutes flat](https://www.gptechblog.com/from-huggingface-dataset-to-qdrant-vector-database-in-12-minutes-flat/)
 
 ## Hugging Face
 
