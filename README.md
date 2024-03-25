@@ -69,6 +69,14 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 - [RAG Systems Architecture](https://qdrant.tech/articles/what-is-rag-in-ai/#)
 - [From HuggingFace dataset to Qdrant vector database in 12 minutes flat](https://www.gptechblog.com/from-huggingface-dataset-to-qdrant-vector-database-in-12-minutes-flat/)
 
+## Knowledge Graphs
+
+- [Improving RAG performance with Knowledge Graphs](https://superlinked.com/vectorhub/improving-rag-performance-with-knowledge-graphs)
+- [A practical guide to constructing and retrieving information from knowledge graphs in RAG applications with Neo4j and LangChain](https://blog.langchain.dev/enhancing-rag-based-applications-accuracy-by-constructing-and-leveraging-knowledge-graphs/)
+- [Langchain KG](https://python.langchain.com/docs/use_cases/graph/quickstart)
+- [Injecting Knowledge Graphs in different RAG stages](https://medium.com/enterprise-rag/injecting-knowledge-graphs-in-different-rag-stages-a3cd1221f57b)
+- [Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems](./docs/Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems | by Ryan Nguyen | Medium.pdf)
+
 ## Hugging Face
 
 - [Learn how to build an advanced chatbot with a cloud vector database](https://gurjeet333.medium.com/learn-how-to-build-a-chatbot-from-scratch-on-a-free-cloud-vector-database-193a7fa29c13)
