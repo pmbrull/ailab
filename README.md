@@ -14,6 +14,9 @@
 - [Context Window](https://www.hopsworks.ai/dictionary/context-window-for-llms)
 
 - [Orca outperforms GPT-4?](https://www.microsoft.com/en-us/research/project/orca/)
+- [Databricks DBRX](https://www.databricks.com/blog/announcing-dbrx-new-standard-efficient-open-source-customizable-llms?utm_source=bambu&utm_medium=social&utm_campaign=advocacy&blaid=5834947)
+- [GenAI Tech Lab Fellowship](https://mltechniques.com/machine-learning-professional-certifications/genaitechlab-fellowship/)
+  - [repo](https://github.com/VincentGranville/Large-Language-Models?tab=readme-ov-file)
 
 ### Fine Tuning
 
@@ -68,6 +71,7 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 - [Build your first RAG](https://www.packtpub.com/article-hub/build-your-first-rag-with-qdrant)
 - [RAG Systems Architecture](https://qdrant.tech/articles/what-is-rag-in-ai/#)
 - [From HuggingFace dataset to Qdrant vector database in 12 minutes flat](https://www.gptechblog.com/from-huggingface-dataset-to-qdrant-vector-database-in-12-minutes-flat/)
+- [Semantic Router](https://qdrant.tech/documentation/frameworks/semantic-router/)
 
 ## Knowledge Graphs
 
@@ -76,6 +80,8 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 - [Langchain KG](https://python.langchain.com/docs/use_cases/graph/quickstart)
 - [Injecting Knowledge Graphs in different RAG stages](https://medium.com/enterprise-rag/injecting-knowledge-graphs-in-different-rag-stages-a3cd1221f57b)
 - [Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems](./docs/Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems | by Ryan Nguyen | Medium.pdf)
+- [Awesome LLM KG - Papers](https://github.com/RManLuo/Awesome-LLM-KG)
+- [Enhancing RAG-based application accuracy by constructing and leveraging knowledge graphs](https://blog.langchain.dev/enhancing-rag-based-applications-accuracy-by-constructing-and-leveraging-knowledge-graphs/)
 
 ## Hugging Face
 
