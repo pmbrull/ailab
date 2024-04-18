@@ -27,8 +27,8 @@
 Host lima
   Hostname 192.168.1.203
   User pere
-  LocalForward 9888 localhost:8080
-  LocalForward 9889 localhost:10443
+  LocalForward 9888 localhost:8080   # argocd
+  LocalForward 9889 localhost:10443  # dashboard-proxy
 ```
 
 Then `ssh lima`
@@ -40,9 +40,9 @@ Then `ssh lima`
 1. Create script `/usr/local/bin/expose.sh`
    ```bash
    #!/bin/bash
-   mkdir /tmp/expose.service & \
+   mkdir -p /tmp/expose.service & \
    microk8s kubectl port-forward svc/argocd-server -n argocd 8080:443 > /tmp/expose.service/port-forward-argocd.log & \
-   microk8s dashboard-proxy # https://localhost:10443 > /tmp/expose.service/dashboard-proxy.log &
+   microk8s dashboard-proxy > /tmp/expose.service/dashboard-proxy.log &
    ```
 2. `chmod +x expose.sh`
 3. Create `/etc/systemd/system/expose.service`
