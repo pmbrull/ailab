@@ -18,6 +18,8 @@
 - [GenAI Tech Lab Fellowship](https://mltechniques.com/machine-learning-professional-certifications/genaitechlab-fellowship/)
   - [repo](https://github.com/VincentGranville/Large-Language-Models?tab=readme-ov-file)
 
+- [Vanna AI - SQL](https://github.com/vanna-ai/vanna): 🤖 Chat with your SQL database 📊. Accurate Text-to-SQL Generation via LLMs using RAG 🔄.
+
 ### Fine Tuning
 
 - [LLM fine tuning](https://www.superannotate.com/blog/llm-fine-tuning)
@@ -82,6 +84,11 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 - [Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems](./docs/Embeddings + Knowledge Graphs: The Ultimate Tools for RAG Systems | by Ryan Nguyen | Medium.pdf)
 - [Awesome LLM KG - Papers](https://github.com/RManLuo/Awesome-LLM-KG)
 - [Enhancing RAG-based application accuracy by constructing and leveraging knowledge graphs](https://blog.langchain.dev/enhancing-rag-based-applications-accuracy-by-constructing-and-leveraging-knowledge-graphs/)
+- [Neo4J Custom Embeddings Server](https://medium.com/@manojkumarvohra9/rag-on-knowledge-graphs-using-zephyr-7b-2f34f99a9747)
+  - [Run Neo4J APOC](https://neo4j.com/labs/apoc/5/installation/)
+  - Use BentoML to host the embedding model as an API in Docker
+  - [Java Neo4J example](https://github.com/michael-simons/neo4j-examples-and-tips/blob/master/examples/testing-ogm-against-embedded-with-apoc/src/test/java/org/neo4j/tips/testing/testing_ogm_against_embedded_with_apoc/ApplicationTests.java#L53)
+  - [Writing Custom Procedures for Neo4J](https://medium.com/@st3llasia/writing-custom-procedures-for-neo4j-d20e28dc7afe): In practice, plugins are JAR files that needs to be placed in the plugins folder of the Neo4j database. These JAR files are automatically loaded at startup, and immediately available from Cypher. 
 
 ## Hugging Face
 
@@ -92,3 +99,8 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 
 - [Introduction](https://python.langchain.com/docs/get_started/introduction)
 - [Building an LLM open source search engine in 100 lines using LangChain and Ray](https://www.anyscale.com/blog/llm-open-source-search-engine-langchain-ray)
+
+## AI Agents
+
+- [Crew AI](https://crewai.com): Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks.
+- [SuperAGI](https://github.com/TransformerOptimus/SuperAGI): A dev-first open source autonomous AI agent framework. Enabling developers to build, manage & run useful autonomous agents quickly and reliably.
