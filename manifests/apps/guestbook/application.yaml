@@ -3,9 +3,6 @@ kind: Application
 metadata:
   name: guestbook
   namespace: argocd
-  finalizers:
-    # Deletes ArgoCD Application when you delete the AppSource
-    - "application-finalizer.appsource.argoproj.io"
 spec:
   project: default
   source:
