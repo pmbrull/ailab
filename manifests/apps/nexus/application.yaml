@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/pmbrull/ailab.git
     targetRevision: main
-    path: manifests/apps/nexus
+    path: manifests/apps/nexus/src
   destination:
     server: https://kubernetes.default.svc
     namespace: nexus
