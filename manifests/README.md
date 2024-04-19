@@ -5,9 +5,12 @@
 - [microk8s](https://microk8s.io/)
   - `alias k='microk8s kubectl'`
   - `sudo microk8s.kubectl config view --raw > $HOME/.kube/config`
+  - `microk8s kubectl create token default` to enter the dashboard
 - [ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/)
   - [CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
   - `admin`: `BgAeLC71fQBubq5R` (from `argocd admin initial-password -n argocd`)
+  - Connect repo from the UI ([guide](https://www.webagesolutions.com/blog/deploy-an-application-using-argocd))
+  - Install [guestbook example](https://argo-cd.readthedocs.io/en/stable/getting_started/)
 - [Nexus]
   - https://devopscube.com/setup-nexus-kubernetes/ ??
   - Better using helm?
