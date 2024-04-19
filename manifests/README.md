@@ -10,7 +10,8 @@
   - [CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
   - `admin`: `BgAeLC71fQBubq5R` (from `argocd admin initial-password -n argocd`)
   - Connect repo from the UI ([guide](https://www.webagesolutions.com/blog/deploy-an-application-using-argocd))
-  - Install [guestbook example](https://argo-cd.readthedocs.io/en/stable/getting_started/)
+  - Install [AppSource](https://blog.argoproj.io/introducing-the-appsource-controller-for-argocd-52f21d28d643)
+  - Install [guestbook example](https://argo-cd.readthedocs.io/en/stable/getting_started/) from GitHub `manifests/apps/guestbook`
 - [Nexus]
   - https://devopscube.com/setup-nexus-kubernetes/ ??
   - Better using helm?
