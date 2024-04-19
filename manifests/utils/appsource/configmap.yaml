@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-appsource-cm
+  namespace: argocd
+data:
+  argocd.address: localhost:8080
+  argocd.clientOpts: "--insecure"
+  project.profiles: |
+    - default:
+        namePattern: .*
+        spec:
+          description: Default AppSource project
+          sourceRepos:
+            - '*'
