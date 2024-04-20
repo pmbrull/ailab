@@ -1,33 +1,35 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nexus
-  namespace: nexus
+  labels:
+      app.kubernetes.io/name: nexus
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: nexus-server
+      app.kubernetes.io/name: nexus
   template:
     metadata:
       labels:
-        app: nexus-server
+          app.kubernetes.io/name: nexus
     spec:
       containers:
-        - name: nexus
-          image: sonatype/nexus3:latest
-          resources:
-            limits:
-              memory: "4Gi"
-              cpu: "1000m"
-            requests:
-              memory: "2Gi"
-              cpu: "500m"
+        - image: sonatype/nexus3:3.67.1
+          name: nexus
           ports:
-            - containerPort: 8081
+            - name: ui
+              containerPort: 8081
+            - name: docker
+              containerPort: 8083
           volumeMounts:
-            - name: nexus-data
-              mountPath: /nexus-data
+          - name: data
+            mountPath: /nexus-data
+      securityContext:
+        fsGroup: 200
       volumes:
-        - name: nexus-data
-          emptyDir: {}
+      - name: data
+        persistentVolumeClaim:
+          claimName: nexus-data
