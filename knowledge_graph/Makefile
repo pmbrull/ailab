@@ -35,7 +35,6 @@ install_dev:  ## Install the dev dependencies
 .PHONY: build
 build:  ## Build the docker images
 	@cd embeddings && bentoml build -f bentofile.yaml --containerize
-	@BENTO_VERSION=$(bentoml get transformer:latest -o json | jq ".version") &&
 
 .PHONY: push
 push:  ## Push the docker images
