@@ -5,7 +5,7 @@ metadata:
   name: embeddings
   namespace: argocd
 spec:
-  project: knowledge-graph
+  project: default
   source:
     repoURL: https://github.com/pmbrull/ailab.git
     targetRevision: main
