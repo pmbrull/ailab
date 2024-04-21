@@ -39,4 +39,4 @@ build:  ## Build the docker images
 .PHONY: push
 push:  ## Push the docker images
 	@BENTO_VERSION=$(bentoml get transformer:latest -o json | jq ".version") && \
-	    @docker push "localhost:8082/docker-private/transformer:$$BENTO_VERSION"
+	    docker push "localhost:8082/docker-private/transformer:$$BENTO_VERSION"
