@@ -1,0 +1,15 @@
+service: "embeddings_api:Transformer"
+description: Embedding service using Sentence Transformers
+labels:
+  owner: ailab
+  project: knowledge-graph
+include:
+  - "*.py"
+python:
+  packages:
+    - torch~=2.2
+    - sentence-transformers~=2.7
+    - pydantic~=2.7
+docker:
+  python_version: 3.11
+  # base_image: if we want to have a common bentoML base image for all our services

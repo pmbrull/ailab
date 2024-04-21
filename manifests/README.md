@@ -53,6 +53,7 @@ Then `ssh lima`
    mkdir -p /tmp/expose.service & \
    microk8s kubectl port-forward svc/argocd-server -n argocd 8080:443 & \
    microk8s kubectl port-forward svc/nexus -n nexus 8081:8081 & \
+   microk8s kubectl port-forward svc/nexus -n nexus 8082:8082 & \
    microk8s dashboard-proxy &
    ```
 2. `chmod +x expose.sh`

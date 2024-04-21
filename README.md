@@ -40,6 +40,10 @@
 - [Containerize models and deploy them as images](https://docs.bentoml.com/en/latest/guides/containerization.html)
 - [Guide on testing services](https://docs.bentoml.com/en/latest/guides/testing.html)
 - [Deploy as ASGI Server](https://docs.bentoml.com/en/latest/guides/asgi.html)
+- [BentoML API example](https://github.com/bentoml/transformers-nlp-service/blob/main/service.py)
+
+Testing!
+- [unit, integration, and end-to-end tests](https://docs.bentoml.org/en/latest/guides/testing.html)
 
 With LLM
 

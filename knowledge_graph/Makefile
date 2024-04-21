@@ -13,7 +13,6 @@ precommit_install:  ## Install the project's precommit hooks from .pre-commit-co
 
 .PHONY: lint
 lint:  ## Run linter
-	ruff format .
 	ruff --fix .
 	ruff .
 
@@ -24,3 +23,21 @@ uv:  ## Install https://github.com/astral-sh/uv
 .PHONY: venv
 venv:  ## Prepare the virtualenv with uv
 	@uv venv
+
+.PHONY: install
+install:  ## Install the project
+	@uv pip install .
+
+.PHONY: install_dev
+install_dev:  ## Install the dev dependencies
+	@uv pip install ".[dev]"
+
+.PHONY: build
+build:  ## Build the docker images
+	@cd embeddings && bentoml build -f bentofile.yaml --containerize
+	@BENTO_VERSION=$(bentoml get transformer:latest -o json | jq ".version") &&
+
+.PHONY: push
+push:  ## Push the docker images
+	@BENTO_VERSION=$(bentoml get transformer:latest -o json | jq ".version") &&
+	@docker push localhost:8082/docker-private/transformer:$$BENTO_VERSION"

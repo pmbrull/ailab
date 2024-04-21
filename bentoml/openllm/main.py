@@ -18,9 +18,7 @@ from metadata.ingestion.ometa.ometa_api import OpenMetadata
 server_config = OpenMetadataConnection(
     hostPort="https://sandbox.open-metadata.org/api",
     authProvider="openmetadata",
-    securityConfig=OpenMetadataJWTClientConfig(
-        jwtToken=os.getenv("SBX_JWT")
-    ),
+    securityConfig=OpenMetadataJWTClientConfig(jwtToken=os.getenv("SBX_JWT")),
 )
 metadata = OpenMetadata(server_config)
 
@@ -34,10 +32,17 @@ terms = metadata.list_entities(
     fields=["children", "owner", "parent"],
     skip_on_failure=True,
 )
-dataset = [f"{term.displayName or term.name} is {term.description.__root__}" for term in terms.entities]
+dataset = [
+    f"{term.displayName or term.name} is {term.description.__root__}"
+    for term in terms.entities
+]
 
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-qdrant_vec_store = Qdrant.from_texts(dataset, embedding_model, host="localhost", port=6333)
+embedding_model = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
+qdrant_vec_store = Qdrant.from_texts(
+    dataset, embedding_model, host="localhost", port=6333
+)
 
 llm = Ollama(model="llama2")
 rag = RetrievalQA.from_chain_type(
