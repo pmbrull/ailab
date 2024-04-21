@@ -17,6 +17,7 @@
 - [Nexus]
   - Deployed in ArgoCD
   - Get the initial `admin` password with: `k -n nexus exec -it nexus-6dc695df94-495jc -- bash` then `cat /nexus-data/admin.password`.
+    - Updated `admin` pwd to ailab pc pwd
   - Setup docker repository [guide](https://medium.com/codemonday/setup-nexus-oss-on-docker-as-docker-registry-for-learning-748c23f0b951)
     - named `docker-private`
     - accepts HTTP at `8082`
