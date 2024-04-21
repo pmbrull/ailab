@@ -2,12 +2,9 @@
 Load data into Qdrant index
 ref: https://www.gptechblog.com/from-huggingface-dataset-to-qdrant-vector-database-in-12-minutes-flat/
 """
+
 import os
-import time
-import math
 import torch
-from itertools import islice
-from tqdm import tqdm
 from qdrant_client import models, QdrantClient
 from qdrant_client.http.models import PointStruct
 from sentence_transformers import SentenceTransformer
@@ -15,7 +12,6 @@ from sentence_transformers import SentenceTransformer
 from metadata.generated.schema.entity.data.glossary import Glossary
 from metadata.generated.schema.entity.data.glossaryTerm import (
     GlossaryTerm,
-    TermReference,
 )
 from metadata.generated.schema.entity.services.connections.metadata.openMetadataConnection import (
     OpenMetadataConnection,
@@ -33,9 +29,7 @@ print(f"Using device: {device}")
 server_config = OpenMetadataConnection(
     hostPort="https://sandbox.open-metadata.org/api",
     authProvider="openmetadata",
-    securityConfig=OpenMetadataJWTClientConfig(
-        jwtToken=os.getenv("SBX_JWT")
-    ),
+    securityConfig=OpenMetadataJWTClientConfig(jwtToken=os.getenv("SBX_JWT")),
 )
 metadata = OpenMetadata(server_config)
 
@@ -52,12 +46,12 @@ terms = metadata.list_entities(
 print(len(terms.entities))
 
 # Load the desired model
-model = SentenceTransformer(
-  'sentence-transformers/all-MiniLM-L6-v2',
-  device=device
-)
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device=device)
 
-dataset = [f"{term.displayName or term.name} is {term.description.__root__}" for term in terms.entities]
+dataset = [
+    f"{term.displayName or term.name} is {term.description.__root__}"
+    for term in terms.entities
+]
 embeddings = [model.encode(sentence) for sentence in dataset]
 
 client = QdrantClient("localhost", port=6333)
