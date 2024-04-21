@@ -1,6 +1,7 @@
 # AI Lab Ubuntu setup
 
 - [docker](https://docs.docker.com/engine/install/ubuntu/)
+  - `sudo usermod -aG docker pere && newgrp docker`
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [microk8s](https://microk8s.io/)
   - `alias k='microk8s kubectl'`

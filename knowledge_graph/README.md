@@ -17,3 +17,8 @@ Build a knowledge graph with the following tools:
     make build
     ```
 - Get the latest built version with `bentoml get transformer:latest -o json | jq ".version"`
+
+next steps:
+- test push to nexus
+- prep argocd app
+- build neo4j with custom embeddings
