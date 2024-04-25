@@ -93,6 +93,7 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
   - Use BentoML to host the embedding model as an API in Docker
   - [Java Neo4J example](https://github.com/michael-simons/neo4j-examples-and-tips/blob/master/examples/testing-ogm-against-embedded-with-apoc/src/test/java/org/neo4j/tips/testing/testing_ogm_against_embedded_with_apoc/ApplicationTests.java#L53)
   - [Writing Custom Procedures for Neo4J](https://medium.com/@st3llasia/writing-custom-procedures-for-neo4j-d20e28dc7afe): In practice, plugins are JAR files that needs to be placed in the plugins folder of the Neo4j database. These JAR files are automatically loaded at startup, and immediately available from Cypher. 
+    - [Example](https://github.com/stellasia/neoplus)
 
 ## Hugging Face
 

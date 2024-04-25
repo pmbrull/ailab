@@ -21,8 +21,7 @@
   - Setup docker repository [guide](https://medium.com/codemonday/setup-nexus-oss-on-docker-as-docker-registry-for-learning-748c23f0b951)
     - named `docker-private`
     - accepts HTTP at `8082`
-    - 
-- [BentoML Transformer Release]
+- [BentoML Transformer Release](knowledge_graph/README.md)
 
 # Laptop setup
 

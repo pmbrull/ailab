@@ -18,7 +18,7 @@ Build a knowledge graph with the following tools:
     ```
 - Get the latest built version with `bentoml get transformer:latest -o json | jq ".version"`
 
-next steps:
-- test push to nexus
-- prep argocd app
-- build neo4j with custom embeddings
+## Neo4J Custom Embeddings
+
+- Custom Neo4J APOC to have our own Cypher function calling the embeddings API
+- Build and test locally with `mvn install`

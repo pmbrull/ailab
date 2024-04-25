@@ -56,4 +56,4 @@ convention = "google"
 "__init__.py" = ['D']
 
 [tool.codespell]
-skip = ".git,env*,pydantic/v1/*"
+skip = ".git,env*,pydantic/v1/*,*.java"
