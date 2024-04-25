@@ -22,6 +22,12 @@
     - named `docker-private`
     - accepts HTTP at `8082`
 - [BentoML Transformer Release](knowledge_graph/README.md)
+- [Neo4J]
+- [Knowledge Graph]
+  - [Neo4J Custom Embeddings](knowledge_graph/README.md)
+  - Install [sdkman](https://sdkman.io/install)
+    - `sdk install java 17.0.11-amzn`
+    - `sdk install maven`
 
 # Laptop setup
 
