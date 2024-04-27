@@ -18,19 +18,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EmbeddingsServer {
 
-    private static final String API_SERVER_URL = "http://localhost:3000/embed";
+    private static final String API_SERVER_URL = "http://localhost:9891/embed";
     private static final String TEXT_KEY = "text";
 
-    public static class CustomEmbeddingsResult {
+    public static class CustomEmbeddingResult {
 
-        public final List<Double> embeddings;
+        public final List<Double> embedding;
 
-        public CustomEmbeddingsResult() {
-            this.embeddings = null;
+        public CustomEmbeddingResult() {
+            this.embedding = null;
         }
 
-        public CustomEmbeddingsResult(List<Double> embeddings) {
-            this.embeddings = embeddings;
+        public CustomEmbeddingResult(List<Double> embedding) {
+            this.embedding = embedding;
         }
     }
 
@@ -38,7 +38,7 @@ public class EmbeddingsServer {
 
     @Procedure(name = "io.ailab.embeddings")
     @Description("io.ailab.embeddings('string') - return vector embeddings for the input text.")
-    public Stream<CustomEmbeddingsResult> embeddings(
+    public Stream<CustomEmbeddingResult> embeddings(
             @Name("text") String text) throws URISyntaxException, IOException, InterruptedException {
         if (text == null) {
             return null;
@@ -55,7 +55,7 @@ public class EmbeddingsServer {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         HttpResponse<String> postResponse = httpClient.send(httpRequestPost, HttpResponse.BodyHandlers.ofString());
-        CustomEmbeddingsResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingsResult.class);
-        return Stream.of(new CustomEmbeddingsResult(result.embeddings));
+        CustomEmbeddingResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingResult.class);
+        return Stream.of(new CustomEmbeddingResult(result.embedding));
     }
 }
