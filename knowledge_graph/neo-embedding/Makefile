@@ -6,7 +6,7 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[35m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: build
-build:  ## Run `mvn` and build the docker image
-	mvn install
-	cp target/nembedding-0.0.1-SNAPSHOT.jar .
-	docker build -t neo-embedding .
+build:  ## Run `mvn` and build the docker image with the version: make build VERSION=0.0.1
+	@mvn install
+	@cp target/nembedding-$(VERSION).jar .
+	@docker build -t neo-embedding:$(VERSION) .
