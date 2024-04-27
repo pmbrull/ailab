@@ -9,4 +9,9 @@ help:
 build:  ## Run `mvn` and build the docker image with the version: make build VERSION=0.0.1
 	@mvn install
 	@cp target/nembedding-$(VERSION).jar .
-	@docker build -t neo-embedding:$(VERSION) .
+	docker build -t neo-embedding:$(VERSION) .
+
+.PHONY: push
+push:  ## push the image to nexus: make build VERSION=0.0.1
+	docker tag neo-embedding:$(VERSION) "localhost:8082/docker-private/neo-embedding:$(VERSION)"; \
+        docker push "localhost:8082/docker-private/neo-embedding:$(VERSION)"
