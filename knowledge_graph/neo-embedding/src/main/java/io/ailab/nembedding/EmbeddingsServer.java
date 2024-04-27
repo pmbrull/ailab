@@ -18,7 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EmbeddingsServer {
 
-    private static final String API_SERVER_URL = "http://localhost:9891/embed";
+    // Change me when testing from laptop
+    private static final String API_SERVER_URL = "http://localhost:3000/embed";
     private static final String TEXT_KEY = "text";
 
     public static class CustomEmbeddingResult {
