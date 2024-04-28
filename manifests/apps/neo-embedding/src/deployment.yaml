@@ -20,9 +20,9 @@ spec:
         - image: localhost:8082/docker-private/neo-embedding:0.0.1
           name: neo-embedding
           ports:
-            - name: HTTP
+            - name: http
               containerPort: 7474
-            - name: Bolt
+            - name: bolt
               containerPort: 7687
           volumeMounts:
             - name: data
