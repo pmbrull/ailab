@@ -23,6 +23,7 @@
     - accepts HTTP at `8082`
 - [BentoML Transformer Release](knowledge_graph/README.md)
 - [Neo4J]
+  - Default auth user is `neo4j` and updated password `neo4jneo4j`
 - [Knowledge Graph]
   - [Neo4J Custom Embeddings](knowledge_graph/README.md)
   - Install [sdkman](https://sdkman.io/install)
@@ -47,7 +48,7 @@ Host lima
   LocalForward 9889 localhost:10443  # dashboard-proxy
   LocalForward 9890 localhost:8081   # nexus
   LocalForward 9891 localhost:3000   # transformer
-  LocalForward 9892 localhost:7474   # neo4j http
+  LocalForward 9892 localhost:7474   # neo4j http (browser)
   LocalForward 9893 localhost:7687   # neo4j bolt
 ```
 

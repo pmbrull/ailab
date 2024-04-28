@@ -17,6 +17,7 @@ dependencies = [
     "sentence-transformers~=2.7",
     "torch~=2.2",
     "pydantic~=2.7",
+    "neo4j",
 ]
 
 [project.optional-dependencies]

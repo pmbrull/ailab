@@ -22,3 +22,4 @@ Build a knowledge graph with the following tools:
 
 - Custom Neo4J APOC to have our own Cypher function calling the embeddings API
 - Build and test locally with `mvn install`
+- Deployed in an image `neo-embedding`
