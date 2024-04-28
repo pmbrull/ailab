@@ -5,7 +5,7 @@
 
   <groupId>io.ailab</groupId>
   <artifactId>nembedding</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 
   <packaging>jar</packaging>
   <name>nembedding</name>
@@ -27,11 +27,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.13</version>
-    </dependency>
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>

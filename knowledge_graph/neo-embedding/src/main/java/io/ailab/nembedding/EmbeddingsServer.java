@@ -11,13 +11,18 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.neo4j.logging.Log;
-import org.neo4j.procedure.*;
+import org.neo4j.procedure.Context;
+import org.neo4j.procedure.Description;
+import org.neo4j.procedure.Name;
+import org.neo4j.procedure.Procedure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+// example https://github.com/neo4j/apoc/blob/5.19.0/core/src/main/java/apoc/periodic/Periodic.java
 public class EmbeddingsServer {
+
+    //@Context
+    //public Log log;
 
     // Change me when testing from laptop
     // This is the URL from the neo4j pod to the transformer pod
@@ -26,7 +31,6 @@ public class EmbeddingsServer {
     private static final String TEXT_KEY = "text";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final Logger logger = LoggerFactory.getLogger(EmbeddingsServer.class);
 
     public static class CustomEmbeddingResult {
 
@@ -64,7 +68,8 @@ public class EmbeddingsServer {
             CustomEmbeddingResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingResult.class);
             return Stream.of(new CustomEmbeddingResult(result.embedding));
         } catch (Exception e) {
-            logger.error(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
+            // TODO figure out logging
+            System.out.println(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
             throw e;
         }
 
