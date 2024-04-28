@@ -5,6 +5,8 @@ metadata:
   name: neo-embedding
   labels:
       app.kubernetes.io/name: neo-embedding
+  annotations:
+    argocd-image-refresh-annotation: "true"
 spec:
   replicas: 1
   revisionHistoryLimit: 1

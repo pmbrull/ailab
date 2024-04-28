@@ -14,7 +14,7 @@ Build a knowledge graph with the following tools:
     ```
 - Build it with:
     ```bash
-    make install
+    make clean install -DskipTests
     ```
 - Get the latest built version with `bentoml get transformer:latest -o json | jq ".version"`
 
@@ -23,3 +23,11 @@ Build a knowledge graph with the following tools:
 - Custom Neo4J APOC to have our own Cypher function calling the embeddings API
 - Build and test locally with `mvn install`
 - Deployed in an image `neo-embedding`
+
+From the neo4j pod we need to communicate to the transformed pod. We can test things out via:
+
+```bash
+kubectl exec -n knowledge-graph <neo4j pod> -- bash
+# Then execute 
+curl -X POST "http://transformer.knowledge-graph.svc.cluster.local:3000/embed" -H "Content-Type: application/json" --data '{"text": "What is the capital of France?"}'
+```

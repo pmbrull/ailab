@@ -19,7 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EmbeddingsServer {
 
     // Change me when testing from laptop
-    private static final String API_SERVER_URL = "http://localhost:3000/embed";
+    // This is the URL from the neo4j pod to the transformer pod
+    private static final String API_SERVER_URL = "http://transformer.knowledge-graph.svc.cluster.local:3000/embed";
     private static final String TEXT_KEY = "text";
 
     public static class CustomEmbeddingResult {
