@@ -7,7 +7,7 @@ help:
 
 .PHONY: build
 build:  ## Run `mvn` and build the docker image with the version: make build VERSION=0.0.1
-	@mvn clean install -DskiptTests
+	@mvn clean install -DskipTests
 	@cp target/nembedding-$(VERSION).jar .
 	docker build -t neo-embedding:$(VERSION) .
 

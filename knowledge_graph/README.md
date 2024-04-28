@@ -14,7 +14,8 @@ Build a knowledge graph with the following tools:
     ```
 - Build it with:
     ```bash
-    make clean install -DskipTests
+    make build VERSION=0.0.1
+    make push VERSION=0.0.1
     ```
 - Get the latest built version with `bentoml get transformer:latest -o json | jq ".version"`
 
