@@ -19,7 +19,7 @@ spec:
           app.kubernetes.io/name: neo-embedding
     spec:
       containers:
-        - image: localhost:8082/docker-private/neo-embedding:0.0.3
+        - image: localhost:8082/docker-private/neo-embedding:0.0.4
           name: neo-embedding
           ports:
             - name: http
