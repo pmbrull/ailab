@@ -10,23 +10,23 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.neo4j.procedure.Context;
-import org.neo4j.procedure.Description;
-import org.neo4j.logging.InternalLog;
-import org.neo4j.procedure.Name;
-import org.neo4j.procedure.Procedure;
+import org.neo4j.logging.Log;
+import org.neo4j.procedure.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmbeddingsServer {
 
     // Change me when testing from laptop
     // This is the URL from the neo4j pod to the transformer pod
-    // private static final String API_SERVER_URL = "http://transformer.knowledge-graph.svc.cluster.local:3000/embed";
-    private static final String API_SERVER_URL = "http://localhost:3000/embed";
+    private static final String API_SERVER_URL = "http://transformer.knowledge-graph.svc.cluster.local:3000/embed";
+    // private static final String API_SERVER_URL = "http://localhost:3000/embed";
     private static final String TEXT_KEY = "text";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final Logger logger = LoggerFactory.getLogger(EmbeddingsServer.class);
 
     public static class CustomEmbeddingResult {
 
@@ -40,9 +40,6 @@ public class EmbeddingsServer {
             this.embedding = embedding;
         }
     }
-
-    @Context
-    public InternalLog log;
 
     @Procedure(name = "io.ailab.embeddings")
     @Description("io.ailab.embeddings('string') - return vector embeddings for the input text.")
@@ -67,7 +64,7 @@ public class EmbeddingsServer {
             CustomEmbeddingResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingResult.class);
             return Stream.of(new CustomEmbeddingResult(result.embedding));
         } catch (Exception e) {
-            log.error(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
+            logger.error(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
             throw e;
         }
 
