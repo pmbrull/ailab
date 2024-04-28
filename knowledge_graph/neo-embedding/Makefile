@@ -9,7 +9,7 @@ help:
 build:  ## Run `mvn` and build the docker image with the version: make build VERSION=0.0.1
 	@mvn clean install -DskipTests
 	@cp target/nembedding-$(VERSION).jar .
-	docker build -t neo-embedding:$(VERSION) .
+	docker build -t neo-embedding:$(VERSION) --build-arg="VERSION=$(VERSION)" .
 
 .PHONY: push
 push:  ## push the image to nexus: make build VERSION=0.0.1

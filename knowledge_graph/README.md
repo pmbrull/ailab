@@ -36,6 +36,7 @@ curl -X POST "http://transformer.knowledge-graph.svc.cluster.local:3000/embed" -
 From the neo4j pod we can also run the cypher shell and test out the custom function:
 
 ```bash
+k -n knowledge-graph exec -it deployment/neo-embedding -- bash
 cypher-shell
 CALL io.ailab.embeddings('I am a random string') YIELD embedding RETURN embedding;
 :exit
