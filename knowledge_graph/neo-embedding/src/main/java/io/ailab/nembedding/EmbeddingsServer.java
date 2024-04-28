@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 import org.neo4j.procedure.Context;
 import org.neo4j.procedure.Description;
-import org.neo4j.logging.Log;
+import org.neo4j.logging.InternalLog;
 import org.neo4j.procedure.Name;
 import org.neo4j.procedure.Procedure;
 
@@ -22,7 +22,8 @@ public class EmbeddingsServer {
 
     // Change me when testing from laptop
     // This is the URL from the neo4j pod to the transformer pod
-    private static final String API_SERVER_URL = "http://transformer.knowledge-graph.svc.cluster.local:3000/embed";
+    // private static final String API_SERVER_URL = "http://transformer.knowledge-graph.svc.cluster.local:3000/embed";
+    private static final String API_SERVER_URL = "http://localhost:3000/embed";
     private static final String TEXT_KEY = "text";
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final HttpClient httpClient = HttpClient.newHttpClient();
@@ -41,7 +42,7 @@ public class EmbeddingsServer {
     }
 
     @Context
-    public Log log;
+    public InternalLog log;
 
     @Procedure(name = "io.ailab.embeddings")
     @Description("io.ailab.embeddings('string') - return vector embeddings for the input text.")
