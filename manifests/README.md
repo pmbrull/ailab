@@ -47,6 +47,8 @@ Host lima
   LocalForward 9889 localhost:10443  # dashboard-proxy
   LocalForward 9890 localhost:8081   # nexus
   LocalForward 9891 localhost:3000   # transformer
+  LocalForward 9892 localhost:7474   # neo4j http
+  LocalForward 9893 localhost:7687   # neo4j bolt
 ```
 
 Then `ssh lima`
@@ -63,6 +65,8 @@ Then `ssh lima`
    microk8s kubectl port-forward svc/nexus -n nexus 8081:8081 & \
    microk8s kubectl port-forward svc/nexus -n nexus 8082:8082 & \
    microk8s kubectl port-forward svc/transformer -n knowledge-graph 3000:3000 & \
+   microk8s kubectl port-forward svc/neo-embedding -n knowledge-graph 7474:7474 & \
+   microk8s kubectl port-forward svc/neo-embedding -n knowledge-graph 7687:7687 & \
    microk8s dashboard-proxy &
    ```
 2. `chmod +x expose.sh`

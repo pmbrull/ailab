@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neo-embedding
+  labels:
+      app.kubernetes.io/name: neo-embedding
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: neo-embedding
+  template:
+    metadata:
+      labels:
+          app.kubernetes.io/name: neo-embedding
+    spec:
+      containers:
+        - image: localhost:8082/docker-private/neo-embedding:0.0.1
+          name: neo-embedding
+          ports:
+            - name: HTTP
+              containerPort: 7474
+            - name: Bolt
+              containerPort: 7687
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: NEO4J_apoc_export_file_enabled
+              value: "true"
+            - name: NEO4J_apoc_import_file_enabled
+              value: "true"
+            - name: NEO4J_apoc_import_file_use__neo4j__config
+              value: "true"
+            - name: NEO4J_PLUGINS
+              value: '["apoc-extended"]'
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: neo-embedding-data
