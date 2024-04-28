@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // example https://github.com/neo4j/apoc/blob/5.19.0/core/src/main/java/apoc/periodic/Periodic.java
 public class EmbeddingsServer {
 
-    //@Context
-    //public Log log;
+    @Context
+    public Log log;
 
     // Change me when testing from laptop
     // This is the URL from the neo4j pod to the transformer pod
@@ -68,8 +68,7 @@ public class EmbeddingsServer {
             CustomEmbeddingResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingResult.class);
             return Stream.of(new CustomEmbeddingResult(result.embedding));
         } catch (Exception e) {
-            // TODO figure out logging
-            System.out.println(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
+            log.error(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
             throw e;
         }
 
