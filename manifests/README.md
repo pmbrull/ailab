@@ -9,7 +9,7 @@
   - `microk8s kubectl create token default` to enter the dashboard
 - [ArgoCD](https://argo-cd.readthedocs.io/en/stable/getting_started/)
   - [CLI](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
-  - `admin`:  get pwd from from `argocd admin initial-password -n argocd` or ` k -n argocd get secrets/argocd-initial-admin-secret --template={{.data.password}} | base64 -d`
+  - `admin`:  get pwd from from `argocd admin initial-password -n argocd` or `k -n argocd get secrets/argocd-initial-admin-secret --template={{.data.password}} | base64 -d`
   - Connect repo from the UI ([guide](https://www.webagesolutions.com/blog/deploy-an-application-using-argocd))
   - Install [AppSource](https://blog.argoproj.io/introducing-the-appsource-controller-for-argocd-52f21d28d643)
   - Install [guestbook example](https://argo-cd.readthedocs.io/en/stable/getting_started/) from GitHub `manifests/apps/guestbook`
@@ -54,6 +54,14 @@ Host lima
 Then `ssh lima`
 
 # AI Lab setup
+
+## Apply apps
+
+Apply each application to register it to ArgoCD with
+
+```bash
+k apply -n argocd -f application.yaml
+```
 
 ## Expose all services in systemd
 

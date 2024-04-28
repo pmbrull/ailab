@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/pmbrull/ailab.git
     targetRevision: main
-    path: manifests/apps/neo-embeddings/src
+    path: manifests/apps/neo-embedding/src
   destination:
     server: https://kubernetes.default.svc
     namespace: knowledge-graph
