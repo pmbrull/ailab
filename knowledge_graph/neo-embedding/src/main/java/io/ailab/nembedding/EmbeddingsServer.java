@@ -30,7 +30,9 @@ public class EmbeddingsServer {
     // private static final String API_SERVER_URL = "http://localhost:3000/embed";
     private static final String TEXT_KEY = "text";
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final HttpClient httpClient = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_2)
+        .build();
 
     public static class CustomEmbeddingResult {
 
@@ -48,7 +50,7 @@ public class EmbeddingsServer {
     @Procedure(name = "io.ailab.embeddings")
     @Description("io.ailab.embeddings('string') - return vector embeddings for the input text.")
     public Stream<CustomEmbeddingResult> embeddings(
-            @Name("text") String text) throws URISyntaxException, IOException, InterruptedException {
+            @Name("text") String text) {
 
         if (text == null) {
             return null;
@@ -68,8 +70,9 @@ public class EmbeddingsServer {
             CustomEmbeddingResult result = objectMapper.readValue(postResponse.body(), CustomEmbeddingResult.class);
             return Stream.of(new CustomEmbeddingResult(result.embedding));
         } catch (Exception e) {
-            log.error(String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e));
-            throw e;
+            String message = String.format("Error in embeddings procedure against %s: %s", API_SERVER_URL, e);
+            log.error(String.format(message));
+            throw new RuntimeException(message, e);
         }
 
     }
