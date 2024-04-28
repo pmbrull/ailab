@@ -36,6 +36,8 @@ spec:
               value: "true"
             - name: NEO4J_PLUGINS
               value: '["apoc-extended"]'
+      securityContext:
+        fsGroup: 200
       volumes:
         - name: data
           persistentVolumeClaim:
