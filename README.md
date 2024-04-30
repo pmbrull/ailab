@@ -62,6 +62,8 @@ CICD
 
 ## Vector Database
 
+- [RAGCache](https://arxiv.org/pdf/2404.12457)
+
 Vector embeddings serve as a bridge between the raw textual input and the language model’s neural network.
 
 - [What are Vector DBs?](https://qdrant.tech/articles/what-is-a-vector-database/)

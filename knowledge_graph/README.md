@@ -41,3 +41,87 @@ cypher-shell
 CALL io.ailab.embeddings('I am a random string') YIELD embedding RETURN embedding;
 :exit
 ```
+
+## Neo4J Vector Index
+
+Python utils:
+
+```python
+from neo4j import GraphDatabase, RoutingControl
+
+def cypher_read_query(query, **parameters):
+    with GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as driver:
+        records, _, _ = driver.execute_query(
+            query,
+            parameters_=parameters,
+            database_=NEO4J_DATABASE,
+            routing_=RoutingControl.READ,
+        )
+        return records
+
+
+def cypher_write_query(query, **parameters):
+    with GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD)) as driver:
+        result = driver.execute_query(
+            query,
+            parameters_=parameters,
+            database_=NEO4J_DATABASE,
+            routing_=RoutingControl.WRITE,
+        )
+        return result
+```
+
+1. Create the vector index with
+
+```cypher
+CREATE VECTOR INDEX movie_tagline_embeddings IF NOT EXISTS
+  FOR (m:Movie) ON (m.taglineEmbedding) 
+  OPTIONS { indexConfig: {
+    `vector.dimensions`: 384,
+    `vector.similarity_function`: 'cosine'
+  }}
+```
+
+If we use the https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2 model, dimension is 384.
+
+TODO:
+- update the dimensions for new models
+- research better similarity functions
+
+Notebooks:
+- https://github.com/neo4j-examples/sec-edgar-notebooks/tree/main
+- https://github.com/prosto/neo4j-haystack-playground/blob/main/neo4j_haystack_journey.ipynb
+
+
+2. Add the embeddings
+
+```cypher
+MATCH (movie:Movie)
+WHERE movie.tagline IS NOT NULL
+CALL io.ailab.embeddings(movie.tagline) YIELD embedding
+CALL db.create.setNodeVectorProperty(movie, 'embedding', embedding)
+```
+
+This will `setNodeVectorProperty` to the node `movie`, on a new field `embedding` with the `embedding` result
+from our custom procedure `io.ailab.embeddings`.
+
+3. Query similar movies using the vector tagline
+
+```python
+import httpx
+import numpy as np
+
+# Use the same transformer model
+query_embedding = httpx.post("http://localhost:9891/embed", data={"text": "v for vendetta"})
+query_embedding.json()
+
+question_embedding = np.array(query_embedding.json().get("embedding"))
+
+cypher_read_query("""
+  CALL db.index.vector.queryNodes('movie-embeddings', $top_k, $embedding)
+  YIELD node AS similarMovie, score
+
+  MATCH (similarMovie) WHERE similarMovie.released > 2000
+  RETURN similarMovie.title, similarMovie.tagline AS tagline, score
+""", embedding=question_embedding, top_k=3)
+```
