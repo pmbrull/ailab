@@ -125,3 +125,16 @@ cypher_read_query("""
   RETURN similarMovie.title, similarMovie.tagline AS tagline, score
 """, embedding=question_embedding, top_k=3)
 ```
+
+## Clean Database
+
+```cypher
+match (a) -[r] -> () delete a, r;
+match (a) delete a;
+```
+
+## Langchain example
+- https://learn.deeplearning.ai/courses/knowledge-graphs-rag/lesson/8/chatting-with-the-knowledge-graph
+Use the https://haystack.deepset.ai/integrations/neo4j-document-store dynamic document retriever + the LLM to
+generate the best cypher query first?
+

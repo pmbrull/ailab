@@ -5,19 +5,17 @@ build-backend = "setuptools.build_meta"
 # We will keep handling dependencies in setup.py
 # since it helps us organize and isolate version management
 [project]
-name = "ailab-kg"
+name = "ailab-kg-pipeline"
 version = "0.0.1"
 authors = [{ name = "pmbrull" }]
-description = "ailab knowledge graph"
+description = "ailab knowledge graph pipeline"
 requires-python = ">=3.11"
 
 dependencies = [
-    "bentoml~=1.2",
-    "langchain~=0.1",
-    "sentence-transformers~=2.7",
-    "torch~=2.2",
-    "pydantic~=2.7",
+    "pydantic~=1.10",
     "neo4j",
+    "pyyaml",
+    # "metadata @ file://${PROJECT_ROOT}/../../projects/OpenMetadata/ingestion",  #  uv pip install "/Users/pmbrull/projects/OpenMetadata/ingestion"
 ]
 
 [project.optional-dependencies]

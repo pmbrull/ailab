@@ -1,0 +1,9 @@
+neo4j:
+  uri: ${NEO4J_URI}
+  user: ${NEO4J_USER}
+  password: ${NEO4J_PASSWORD}
+  database: ${NEO4J_DATABASE}
+
+om:
+  uri: ${OM_URI}
+  jwt_token: ${OM_JWT_TOKEN}
