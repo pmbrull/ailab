@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 CONFIG_PATH = Path(__file__).parent.parent / "conf" / "pipeline.yaml"
 
 
-class Neo4JSettings(BaseModel):
+class Neo4JConfig(BaseModel):
     """Neo4J settings"""
 
     uri: str = Field(..., description="URI of the Neo4J database connection")
@@ -19,7 +19,7 @@ class Neo4JSettings(BaseModel):
     database: str = Field(..., description="Database for the Neo4J connection")
 
 
-class OMSettings(BaseModel):
+class OMConfig(BaseModel):
     """OpenMetadata settings"""
 
     uri: str = Field(..., description="Host and port of the OpenMetadata API")
@@ -29,8 +29,8 @@ class OMSettings(BaseModel):
 class Config(BaseModel):
     """Pipeline settings"""
 
-    neo4j: Neo4JSettings
-    om: OMSettings
+    neo4j: Neo4JConfig
+    om: OMConfig
 
 
 def load_config(path: Path) -> Config:

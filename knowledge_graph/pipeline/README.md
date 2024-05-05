@@ -5,8 +5,8 @@ This is where we define the mapping between OpenMetadata assets and Neo4J.
 ## Teams
 
 ```cypher
+CREATE (t:Team {name:'name', displayName:'displayName', description:'description', type:'type'})
 CREATE (u:User {name:'name', displayName:'displayName', email:'email'})
-CREATE (t:Team {name:'name', displayName:'displayName', description:'description'})
 
 CREATE (team)-[:CONTAINS]->(user)
 ```

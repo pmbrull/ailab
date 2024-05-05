@@ -4,22 +4,51 @@ from metadata.generated.schema.entity.services.connections.metadata.openMetadata
     AuthProvider,
     OpenMetadataConnection,
 )
+from metadata.generated.schema.entity.teams.team import Team
+from metadata.generated.schema.entity.teams.user import User
 from metadata.generated.schema.security.client.openMetadataJWTClientConfig import (
     OpenMetadataJWTClientConfig,
 )
 from metadata.ingestion.ometa.ometa_api import OpenMetadata
 
-from pipeline.config import OMSettings
+from pipeline.config import Config
+from pipeline.cypher import CypherLoader
 
 
-def get_ometa(settings: OMSettings) -> OpenMetadata:
-    """Return the OpenMetadata API"""
-    server_config = OpenMetadataConnection(
-        hostPort=settings.uri,
-        authProvider=AuthProvider.openmetadata,
-        securityConfig=OpenMetadataJWTClientConfig(jwtToken=settings.jwt_token),
-    )
-    metadata = OpenMetadata(server_config)
-    assert metadata.health_check()
+class OMCypherLoader:
+    """Load metadata into Neo4J"""
 
-    return metadata
+    def __init__(self, config: Config):
+        self.config = config
+        self.metadata = self.get_ometa()
+        self.cypher = CypherLoader(self.config.neo4j, nuke=True)
+
+    def get_ometa(self) -> OpenMetadata:
+        """Return the OpenMetadata API"""
+        server_config = OpenMetadataConnection(
+            hostPort=self.config.om.uri,
+            authProvider=AuthProvider.openmetadata,
+            securityConfig=OpenMetadataJWTClientConfig(jwtToken=self.config.om.jwt_token),
+        )
+        metadata = OpenMetadata(server_config)
+        assert metadata.health_check()
+
+        return metadata
+
+    def load(self) -> None:
+        """Load metadata into Neo4j"""
+        self.load_users()
+        self.cypher.add_embeddings()
+
+    def load_users(self) -> None:
+        """Load users into Neo4j"""
+        for entity in (Team, User):
+            asset_list = self.metadata.list_all_entities(
+                entity=entity,
+                skip_on_failure=True,
+            )
+            list_ = list(asset_list)
+            self.cypher.create(list_)
+            self.cypher.queue_relationships(list_)
+
+        self.cypher.commit_relationships()

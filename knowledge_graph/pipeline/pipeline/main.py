@@ -1,14 +1,13 @@
 """Populate Neo4J with the data from the glossary"""
 
-
-def load() -> None:
-    """Load metadata into Neo4j"""
-    # metadata: OpenMetadata = get_ometa(CONFIG.om)
+from pipeline.config import CONFIG
+from pipeline.ometa import OMCypherLoader
 
 
 def run() -> None:
     """Run the workflow"""
-    load()
+    loader = OMCypherLoader(CONFIG)
+    loader.load()
 
 
 if __name__ == "__main__":

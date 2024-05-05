@@ -15,6 +15,7 @@ dependencies = [
     "pydantic~=1.10",
     "neo4j",
     "pyyaml",
+    "openmetadata-ingestion",
     # "metadata @ file://${PROJECT_ROOT}/../../projects/OpenMetadata/ingestion",  #  uv pip install "/Users/pmbrull/projects/OpenMetadata/ingestion"
 ]
 
