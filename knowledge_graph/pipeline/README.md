@@ -9,6 +9,7 @@ CREATE (t:Team {name:'name', displayName:'displayName', description:'description
 CREATE (u:User {name:'name', displayName:'displayName', email:'email'})
 
 CREATE (team)-[:CONTAINS]->(user)
+CREATE (team)-[:HAS]->(subTeam)
 ```
 
 ## Governance

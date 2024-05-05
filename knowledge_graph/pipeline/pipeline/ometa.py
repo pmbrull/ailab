@@ -12,7 +12,7 @@ from metadata.generated.schema.security.client.openMetadataJWTClientConfig impor
 from metadata.ingestion.ometa.ometa_api import OpenMetadata
 
 from pipeline.config import Config
-from pipeline.cypher import CypherLoader
+from pipeline.cypher.loader import CypherLoader
 
 
 class OMCypherLoader:
@@ -46,6 +46,7 @@ class OMCypherLoader:
             asset_list = self.metadata.list_all_entities(
                 entity=entity,
                 skip_on_failure=True,
+                fields=["*"],
             )
             list_ = list(asset_list)
             self.cypher.create(list_)

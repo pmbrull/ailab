@@ -1,14 +1,13 @@
 """Ometa Cypher Converter"""
 
 from contextlib import contextmanager
-from functools import singledispatchmethod
 from typing import Any
 
-from metadata.generated.schema.entity.teams.team import Team
-from metadata.generated.schema.entity.teams.user import User
 from neo4j import GraphDatabase, RoutingControl
 
 from pipeline.config import Neo4JConfig
+from pipeline.cypher.node import CypherNodes
+from pipeline.cypher.relationship import CypherRel
 
 
 class CypherLoader:
@@ -17,14 +16,18 @@ class CypherLoader:
     def __init__(self, neo4j_config: Neo4JConfig, nuke: bool = False):
         self.neo4j_config = neo4j_config
         self.db = neo4j_config.database
+        self.rel_queue = []
 
         if nuke:
             self.nuke()
 
+        self.node_creator = CypherNodes()
+        self.rel_creator = CypherRel()
+
     def nuke(self) -> None:
         """Clean the database"""
-        self.cypher_write_query("match(a) delete a")
         self.cypher_write_query("match (a) -[r] -> () delete a, r")
+        self.cypher_write_query("match(a) delete a")
 
     @contextmanager
     def driver(self):
@@ -66,15 +69,6 @@ class CypherLoader:
         """
         self.cypher_write_query(query)
 
-    @staticmethod
-    def _add_description(entity) -> str:
-        """Add description clause if needed"""
-        return f", description: '{entity.description.__root__}'" if entity.description else ""
-
-    @staticmethod
-    def _get_unique_id(entity) -> str:
-        return f"`{str(entity.id.__root__)}`"
-
     def create(self, entities: list[Any]):
         """Create the entity in Neo4J"""
         query = self.create_batch_query(entities)
@@ -82,35 +76,14 @@ class CypherLoader:
 
     def create_batch_query(self, entities: list[Any]) -> str:
         """Create a batch query for the entities"""
-        return "\n".join([self.create_query(entity) for entity in entities])
+        return "\n".join([self.node_creator.create_query(entity) for entity in entities])
 
-    @singledispatchmethod
-    def create_query(self, entity) -> str:
-        """Create a Cypher query for the entity"""
-        raise NotImplementedError(f"Entity {type(entity).__name__} not supported")
+    def queue_relationships(self, entities: list[Any]) -> None:
+        """Queue relationships for the entities"""
+        self.rel_queue.extend("\n".join(rel) for entity in entities if (rel := self.rel_creator.create_query(entity)))
 
-    @create_query.register
-    def _(self, entity: Team) -> str:
-        """Create team"""
-        return f"""
-        CREATE ({self._get_unique_id(entity)}:Team {{
-            name: '{entity.name.__root__}',
-            fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
-            displayName: '{entity.displayName or entity.name.__root__}',
-            type: '{entity.teamType.value}'
-            {self._add_description(entity)}
-        }})
-        """
-
-    @create_query.register
-    def _(self, entity: User) -> str:
-        """Create user"""
-        return f"""
-            CREATE ({self._get_unique_id(entity)}:User {{
-                name: '{entity.name.__root__}',
-                fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
-                displayName: '{entity.displayName or entity.name.__root__}',
-                email: '{entity.email.__root__}'
-                {self._add_description(entity)}
-            }})
-            """
+    def commit_relationships(self) -> None:
+        """Commit the stored relationships"""
+        for query in self.rel_queue:
+            self.cypher_write_query(query)
+        self.rel_queue = []
