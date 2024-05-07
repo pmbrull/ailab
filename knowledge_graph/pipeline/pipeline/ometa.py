@@ -1,5 +1,9 @@
 """Handle ometa utils"""
 
+from metadata.generated.schema.entity.classification.classification import (
+    Classification,
+)
+from metadata.generated.schema.entity.classification.tag import Tag
 from metadata.generated.schema.entity.services.connections.metadata.openMetadataConnection import (
     AuthProvider,
     OpenMetadataConnection,
@@ -13,6 +17,11 @@ from metadata.ingestion.ometa.ometa_api import OpenMetadata
 
 from pipeline.config import Config
 from pipeline.cypher.loader import CypherLoader
+
+ENTITIES = (
+    (Team, User),
+    (Classification, Tag),
+)
 
 
 class OMCypherLoader:
@@ -36,20 +45,23 @@ class OMCypherLoader:
         return metadata
 
     def load(self) -> None:
-        """Load metadata into Neo4j"""
-        self.load_users()
+        """Load metadata into Neo4j
+
+        We group the entities in ordered tuples to ensure that the relationships are created in the correct order
+        """
+        for groups in ENTITIES:
+            it = iter(groups)
+            try:
+                while True:
+                    entity = next(it)
+                    asset_list = self.metadata.list_all_entities(
+                        entity=entity,
+                        skip_on_failure=True,
+                        fields=["*"],
+                    )
+                    list_ = list(asset_list)
+                    self.cypher.create(list_)
+                    self.cypher.queue_relationships(list_)
+            except StopIteration:
+                self.cypher.commit_relationships()
         self.cypher.add_embeddings()
-
-    def load_users(self) -> None:
-        """Load users into Neo4j"""
-        for entity in (Team, User):
-            asset_list = self.metadata.list_all_entities(
-                entity=entity,
-                skip_on_failure=True,
-                fields=["*"],
-            )
-            list_ = list(asset_list)
-            self.cypher.create(list_)
-            self.cypher.queue_relationships(list_)
-
-        self.cypher.commit_relationships()

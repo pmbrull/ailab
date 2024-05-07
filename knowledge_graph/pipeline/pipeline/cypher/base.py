@@ -10,6 +10,11 @@ class CypherBase(abc.ABC):
     def _get_unique_id(entity) -> str:
         return f"`{str(entity.id.__root__)}`"
 
+    @staticmethod
+    def _clean_str(value: str) -> str:
+        """Clean the string for Cypher"""
+        return value.replace("'", "\\'").replace('"', '\\"')
+
     @abc.abstractmethod
     def create_query(self, entity) -> str | list[str]:
         """Create a Cypher query for the entity"""

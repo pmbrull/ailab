@@ -2,6 +2,10 @@
 
 from functools import singledispatchmethod
 
+from metadata.generated.schema.entity.classification.classification import (
+    Classification,
+)
+from metadata.generated.schema.entity.classification.tag import Tag
 from metadata.generated.schema.entity.teams.team import Team
 from metadata.generated.schema.entity.teams.user import User
 
@@ -59,3 +63,21 @@ class CypherRel(CypherBase):
     @create_query.register
     def _(self, entity: User) -> list[str]:
         """Nothing to do for Users"""
+
+    @create_query.register
+    def _(self, entity: Classification) -> list[str]:
+        """Nothing to do for Classifications"""
+
+    @create_query.register
+    def _(self, entity: Tag) -> list[str]:
+        """Create relationship with the classification"""
+        rel_ = []
+        if entity.classification:
+            rel_.append(f"""
+            MATCH 
+              (t:Tag {{fullyQualifiedName: '{entity.fullyQualifiedName}'}}),
+              (c:Classification {{fullyQualifiedName: '{entity.classification.fullyQualifiedName}'}}) 
+            CREATE (c)-[:CONTAINS]->(t) 
+            """)
+
+        return rel_
