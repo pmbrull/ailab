@@ -23,6 +23,7 @@ CREATE (t:GlossaryTerm {name:'name', displayName:'displayName', description:'des
 CREATE (classification)-[:CONTAINS]->(tag) 
 CREATE (glossary)-[:CONTAINS]->(glossaryTerm)
 CREATE (glossaryTerm)-[:CONTAINS]->(glossaryTerm)
+CREATE (glossaryTerm)-[:RELATED_TO]->(glossaryTerm)
 
 CREATE (glossary)-[:HAS]->(tag)
 CREATE (glossaryTerm)-[:HAS]->(tag)

@@ -1,6 +1,8 @@
 """Ometa Cypher Converter"""
 
+import logging
 from contextlib import contextmanager
+from itertools import chain
 from typing import Any
 
 from neo4j import GraphDatabase, RoutingControl
@@ -51,13 +53,16 @@ class CypherLoader:
     def cypher_write_query(self, query, **parameters):
         """Write data to Neo4J using Cypher queries"""
         with self.driver() as driver:
-            result = driver.execute_query(
-                query,
-                parameters_=parameters,
-                database_=self.db,
-                routing_=RoutingControl.WRITE,
-            )
-            return result
+            try:
+                result = driver.execute_query(
+                    query,
+                    parameters_=parameters,
+                    database_=self.db,
+                    routing_=RoutingControl.WRITE,
+                )
+                return result
+            except Exception as exc:
+                logging.error(f"Error writing query {query} due to {exc}")
 
     def add_embeddings(self) -> None:
         """Return the embedding query for the entity"""
@@ -72,7 +77,8 @@ class CypherLoader:
     def create(self, entities: list[Any]):
         """Create the entity in Neo4J"""
         query = self.create_batch_query(entities)
-        self.cypher_write_query(query)
+        if query:
+            self.cypher_write_query(query)
 
     def create_batch_query(self, entities: list[Any]) -> str:
         """Create a batch query for the entities"""
@@ -80,7 +86,9 @@ class CypherLoader:
 
     def queue_relationships(self, entities: list[Any]) -> None:
         """Queue relationships for the entities"""
-        self.rel_queue.extend("\n".join(rel) for entity in entities if (rel := self.rel_creator.create_query(entity)))
+        relationships = [rel for entity in entities if (rel := self.rel_creator.create_query(entity))]
+        # Flatten
+        self.rel_queue.extend(list(chain(*relationships)))
 
     def commit_relationships(self) -> None:
         """Commit the stored relationships"""

@@ -6,6 +6,8 @@ from metadata.generated.schema.entity.classification.classification import (
     Classification,
 )
 from metadata.generated.schema.entity.classification.tag import Tag
+from metadata.generated.schema.entity.data.glossary import Glossary
+from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
 from metadata.generated.schema.entity.teams.team import Team
 from metadata.generated.schema.entity.teams.user import User
 
@@ -32,7 +34,7 @@ class CypherRel(CypherBase):
                 ]
             )
             children_rel = "\n".join(
-                [f"CREATE (t)-[:HAS]->({self._get_unique_id(child)})" for child in entity.children.__root__]
+                [f"CREATE (t)-[:CONTAINS]->({self._get_unique_id(child)})" for child in entity.children.__root__]
             )
             rel_.append(f"""
             MATCH 
@@ -60,13 +62,11 @@ class CypherRel(CypherBase):
 
         return rel_
 
-    @create_query.register
+    @create_query.register(User)
+    @create_query.register(Classification)
+    @create_query.register(Glossary)
     def _(self, entity: User) -> list[str]:
-        """Nothing to do for Users"""
-
-    @create_query.register
-    def _(self, entity: Classification) -> list[str]:
-        """Nothing to do for Classifications"""
+        """Nothing to do"""
 
     @create_query.register
     def _(self, entity: Tag) -> list[str]:
@@ -79,5 +79,44 @@ class CypherRel(CypherBase):
               (c:Classification {{fullyQualifiedName: '{entity.classification.fullyQualifiedName}'}}) 
             CREATE (c)-[:CONTAINS]->(t) 
             """)
+
+        return rel_
+
+    @create_query.register
+    def _(self, entity: GlossaryTerm) -> list[str]:
+        """Create relationship with the classification"""
+        rel_ = []
+        if entity.parent:
+            rel_.append(f"""
+                MATCH 
+                  (t:GlossaryTerm {{fullyQualifiedName: '{entity.fullyQualifiedName.__root__}'}}),
+                  (p:GlossaryTerm {{fullyQualifiedName: '{entity.parent.fullyQualifiedName}'}})
+                CREATE (p)-[:CONTAINS]->(t) 
+                """)
+
+        if entity.glossary:
+            rel_.append(f"""
+                MATCH 
+                  (t:GlossaryTerm {{fullyQualifiedName: '{entity.fullyQualifiedName.__root__}'}}),
+                  (p:Glossary {{fullyQualifiedName: '{entity.glossary.fullyQualifiedName}'}})
+                CREATE (p)-[:CONTAINS]->(t) 
+                """)
+
+        if entity.relatedTerms and entity.relatedTerms.__root__:
+            terms_match = ",\n".join(
+                [
+                    f"({self._get_unique_id(term)}:GlossaryTerm {{fullyQualifiedName: '{term.fullyQualifiedName}'}})"
+                    for term in entity.relatedTerms.__root__
+                ]
+            )
+            terms_rel = "\n".join(
+                [f"CREATE (t)-[:RELATED_TO]->({self._get_unique_id(term)})" for term in entity.relatedTerms.__root__]
+            )
+            rel_.append(f"""
+                MATCH 
+                  (t:GlossaryTerm {{fullyQualifiedName: '{entity.fullyQualifiedName.__root__}'}}),
+                  {terms_match} 
+                {terms_rel} 
+                """)
 
         return rel_

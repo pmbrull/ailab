@@ -6,6 +6,8 @@ from metadata.generated.schema.entity.classification.classification import (
     Classification,
 )
 from metadata.generated.schema.entity.classification.tag import Tag
+from metadata.generated.schema.entity.data.glossary import Glossary
+from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
 from metadata.generated.schema.entity.teams.team import Team
 from metadata.generated.schema.entity.teams.user import User
 
@@ -28,7 +30,7 @@ class CypherNodes(CypherBase):
     def _(self, entity: Team) -> str:
         """Create team"""
         return f"""
-            CREATE ({self._get_unique_id(entity)}:Team {{
+            CREATE ({self._get_unique_id(entity)}:{type(entity).__name__} {{
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
@@ -41,7 +43,7 @@ class CypherNodes(CypherBase):
     def _(self, entity: User) -> str:
         """Create user"""
         return f"""
-            CREATE ({self._get_unique_id(entity)}:User {{
+            CREATE ({self._get_unique_id(entity)}:{type(entity).__name__} {{
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
@@ -50,11 +52,12 @@ class CypherNodes(CypherBase):
             }})
             """
 
-    @create_query.register
-    def _(self, entity: Classification) -> str:
+    @create_query.register(Classification)
+    @create_query.register(Glossary)
+    def _(self, entity) -> str:
         """Create user"""
         return f"""
-            CREATE ({self._get_unique_id(entity)}:Classification {{
+            CREATE ({self._get_unique_id(entity)}:{type(entity).__name__} {{
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
@@ -66,13 +69,19 @@ class CypherNodes(CypherBase):
             }})
             """
 
-    @create_query.register
-    def _(self, entity: Tag) -> str:
+    @create_query.register(Tag)
+    @create_query.register(GlossaryTerm)
+    def _(self, entity) -> str:
         """Create user"""
+        fqn = (
+            entity.fullyQualifiedName.__root__
+            if hasattr(entity.fullyQualifiedName, "__root__")
+            else entity.fullyQualifiedName
+        )
         return f"""
-            CREATE ({self._get_unique_id(entity)}:Tag {{
+            CREATE ({self._get_unique_id(entity)}:{type(entity).__name__} {{
                 name: '{entity.name.__root__}',
-                fullyQualifiedName: '{entity.fullyQualifiedName}',
+                fullyQualifiedName: '{fqn}',
                 displayName: '{entity.displayName or entity.name.__root__}',
                 mutuallyExclusive: '{entity.mutuallyExclusive}',
                 provider: '{entity.provider.value}',

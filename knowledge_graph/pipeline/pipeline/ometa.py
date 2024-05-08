@@ -4,6 +4,8 @@ from metadata.generated.schema.entity.classification.classification import (
     Classification,
 )
 from metadata.generated.schema.entity.classification.tag import Tag
+from metadata.generated.schema.entity.data.glossary import Glossary
+from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
 from metadata.generated.schema.entity.services.connections.metadata.openMetadataConnection import (
     AuthProvider,
     OpenMetadataConnection,
@@ -21,6 +23,7 @@ from pipeline.cypher.loader import CypherLoader
 ENTITIES = (
     (Team, User),
     (Classification, Tag),
+    (Glossary, GlossaryTerm),
 )
 
 
