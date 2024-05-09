@@ -68,8 +68,7 @@ class CypherLoader:
         """Return the embedding query for the entity"""
         query = """
         MATCH (n)
-        WHERE n.description IS NOT NULL
-        CALL io.ailab.embeddings(n.description) YIELD embedding
+        CALL io.ailab.embeddings(COALESCE(n.description, n.displayName)) YIELD embedding
         CALL db.create.setNodeVectorProperty(n, 'embedding', embedding)
         """
         self.cypher_write_query(query)

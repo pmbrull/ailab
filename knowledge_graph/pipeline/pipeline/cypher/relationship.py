@@ -6,8 +6,12 @@ from metadata.generated.schema.entity.classification.classification import (
     Classification,
 )
 from metadata.generated.schema.entity.classification.tag import Tag
+from metadata.generated.schema.entity.data.database import Database
+from metadata.generated.schema.entity.data.databaseSchema import DatabaseSchema
 from metadata.generated.schema.entity.data.glossary import Glossary
 from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
+from metadata.generated.schema.entity.data.table import Table
+from metadata.generated.schema.entity.services.databaseService import DatabaseService
 from metadata.generated.schema.entity.teams.team import Team
 from metadata.generated.schema.entity.teams.user import User
 
@@ -65,7 +69,7 @@ class CypherRel(CypherBase):
     @create_query.register(User)
     @create_query.register(Classification)
     @create_query.register(Glossary)
-    def _(self, entity: User) -> list[str]:
+    def _(self, entity) -> list[str]:
         """Nothing to do"""
 
     @create_query.register
@@ -120,3 +124,10 @@ class CypherRel(CypherBase):
                 """)
 
         return rel_
+
+    @create_query.register(DatabaseService)
+    @create_query.register(Database)
+    @create_query.register(DatabaseSchema)
+    @create_query.register(Table)
+    def _(self, entity) -> list[str]:
+        """Nothing to do"""

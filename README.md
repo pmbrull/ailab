@@ -100,6 +100,16 @@ Vector embeddings serve as a bridge between the raw textual input and the langua
 
 Qdrant allows "filterable" vectors?
 
+### Alternatives
+- [Apache AGE](https://age.apache.org/): A graph extension for Postgres
+  - [Handling vectors](https://github.com/apache/age/issues/1121) -> this is not fully there yet?
+- [Memgraph](https://github.com/memgraph/memgraph)
+  - [Custom Procedures with Python](https://memgraph.com/docs/custom-query-modules/python)
+  - [Querying memgraph through an LLM](https://www.youtube.com/watch?v=okmk357t9W8&ab_channel=Memgraph)
+- [ArangoDB](https://arangodb.com/llm-knowledge-graph/)
+- [NebulaGraph](https://www.nebula-graph.io/posts/graph-llm)
+- [FalkorDB](https://github.com/falkordb/falkordb)
+
 ## Hugging Face
 
 - [Learn how to build an advanced chatbot with a cloud vector database](https://gurjeet333.medium.com/learn-how-to-build-a-chatbot-from-scratch-on-a-free-cloud-vector-database-193a7fa29c13)

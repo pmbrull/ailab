@@ -4,12 +4,16 @@ from metadata.generated.schema.entity.classification.classification import (
     Classification,
 )
 from metadata.generated.schema.entity.classification.tag import Tag
+from metadata.generated.schema.entity.data.database import Database
+from metadata.generated.schema.entity.data.databaseSchema import DatabaseSchema
 from metadata.generated.schema.entity.data.glossary import Glossary
 from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
+from metadata.generated.schema.entity.data.table import Table
 from metadata.generated.schema.entity.services.connections.metadata.openMetadataConnection import (
     AuthProvider,
     OpenMetadataConnection,
 )
+from metadata.generated.schema.entity.services.databaseService import DatabaseService
 from metadata.generated.schema.entity.teams.team import Team
 from metadata.generated.schema.entity.teams.user import User
 from metadata.generated.schema.security.client.openMetadataJWTClientConfig import (
@@ -24,6 +28,7 @@ ENTITIES = (
     (Team, User),
     (Classification, Tag),
     (Glossary, GlossaryTerm),
+    (DatabaseService, Database, DatabaseSchema, Table),
 )
 
 

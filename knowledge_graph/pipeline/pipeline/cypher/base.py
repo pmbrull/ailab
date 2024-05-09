@@ -10,6 +10,9 @@ class CypherBase(abc.ABC):
     def _get_unique_id(entity) -> str:
         return f"`{str(entity.id.__root__)}`"
 
+    def _get_fqn(self, entity) -> str:
+        return f"`{self._clean_str(entity.fullyQualifiedName.__root__)}`"
+
     @staticmethod
     def _clean_str(value: str) -> str:
         """Clean the string for Cypher"""
