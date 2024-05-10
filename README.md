@@ -54,6 +54,7 @@ CICD
 - [GitHub Actions](https://docs.bentoml.com/en/v1.1.11/guides/github-actions.html)
 - [Store and use custom private models models](https://docs.bentoml.org/en/latest/guides/model-store.html) - Build the model, store in S3, use it anywhere as a Service after downloading:
   - With the Python Client `bentoml.models.import_model('s3://my_bucket/folder/my_model.bentomodel')`
+- [Build with env vars](https://docs.bentoml.org/en/latest/guides/build-options.html#envs)
 
 ### BentoML - OpenLLM
 

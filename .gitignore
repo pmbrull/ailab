@@ -2,3 +2,5 @@
 qdrant_storage/
 target/
 *.egg-info/
+__pycache__/
+.DS_STORE
