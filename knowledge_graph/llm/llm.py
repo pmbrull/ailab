@@ -40,6 +40,7 @@ class LLM:
         self.pipeline = transformers.pipeline(
             "llm",
             model=self.model,
+            tokenizer=self.model,
             model_kwargs={"torch_dtype": torch.bfloat16},
             device_map=self.device,
         )
