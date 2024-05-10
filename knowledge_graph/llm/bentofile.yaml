@@ -10,6 +10,7 @@ python:
     - torch~=2.2
     - transformers~=4.40
     - pydantic~=2.7
+    - accelerate
 api_server:
   http:
     port: 3001
