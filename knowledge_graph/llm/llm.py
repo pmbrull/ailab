@@ -1,5 +1,7 @@
 """Raw LLM endpoint"""
 
+import os
+
 import bentoml
 import transformers
 import torch
@@ -7,6 +9,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 MODEL_ID = "meta-llama/Meta-Llama-3-8B"
+HF_TOKEN_KEY = "HF_TOKEN"
 
 
 class LLMInput(BaseModel):
@@ -31,9 +34,12 @@ class LLM:
 
     def __init__(self) -> None:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = transformers.pipeline(
-            "text-generation",
-            model=MODEL_ID,
+        self.model = transformers.AutoModel.from_pretrained(
+            MODEL_ID, access_token=os.getenv(HF_TOKEN_KEY)
+        )
+        self.pipeline = transformers.pipeline(
+            "llm",
+            model=self.model,
             model_kwargs={"torch_dtype": torch.bfloat16},
             device_map=self.device,
         )
@@ -45,4 +51,4 @@ class LLM:
         Pass it as **kwargs + input_spec so that the main payload becomes directly the pydantic model
         """
         input_ = LLMInput(**kwargs)
-        return LLMOutput(answer=self.model(input_.query))
+        return LLMOutput(answer=self.pipeline(input_.query))

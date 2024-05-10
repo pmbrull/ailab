@@ -14,6 +14,9 @@ python:
 api_server:
   http:
     port: 3001
+envs:
+  - name: "HF_TOKEN"
+    value: ${HF_TOKEN}
 docker:
   python_version: 3.11
   # base_image: if we want to have a common bentoML base image for all our services
