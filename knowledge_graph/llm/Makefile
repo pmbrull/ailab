@@ -7,7 +7,7 @@ help:
 
 .PHONY: serve
 serve:  ## Build the docker images
-	@bentoml serve llm:LLM
+	@bentoml serve llm:LLM --port=3001
 
 .PHONY: build
 build:  ## Build the docker images
