@@ -9,4 +9,3 @@ Build a knowledge graph with the following tools:
 - https://learn.deeplearning.ai/courses/knowledge-graphs-rag/lesson/8/chatting-with-the-knowledge-graph
 Use the https://haystack.deepset.ai/integrations/neo4j-document-store dynamic document retriever + the LLM to
 generate the best cypher query first?
-
