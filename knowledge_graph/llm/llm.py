@@ -34,15 +34,12 @@ class LLM:
 
     def __init__(self) -> None:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = transformers.AutoModel.from_pretrained(
-            MODEL_ID, access_token=os.getenv(HF_TOKEN_KEY)
-        )
         self.pipeline = transformers.pipeline(
-            "llm",
-            model=self.model,
-            tokenizer=self.model,
+            "text-generation",
+            model=MODEL_ID,
             model_kwargs={"torch_dtype": torch.bfloat16},
             device_map=self.device,
+            token=os.getenv(HF_TOKEN_KEY),
         )
 
     @bentoml.api(route="/ask", input_spec=LLMInput)
