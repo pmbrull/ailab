@@ -32,12 +32,3 @@ install:  ## Install the project
 install_dev:  ## Install the dev dependencies
 	@uv pip install ".[dev]"
 
-.PHONY: build
-build:  ## Build the docker images
-	@cd embeddings && bentoml build -f bentofile.yaml --containerize
-
-.PHONY: push
-push:  ## Push the docker images
-	@BENTO_VERSION=$$(bentoml get transformer:latest -o json | jq -r ".version"); \
-	    docker tag "transformer:$$BENTO_VERSION" "localhost:8082/docker-private/transformer:$$BENTO_VERSION"; \
-	    docker push "localhost:8082/docker-private/transformer:$$BENTO_VERSION"
