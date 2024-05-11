@@ -4,3 +4,4 @@ target/
 *.egg-info/
 __pycache__/
 .DS_STORE
+.ipynb_checkpoints/
