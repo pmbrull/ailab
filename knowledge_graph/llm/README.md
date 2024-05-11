@@ -11,3 +11,9 @@
     make push VERSION=0.0.1
     ```
 - Get the latest built version with `bentoml get transformer:latest -o json | jq ".version"`
+
+
+- quantization requires GPU? https://stackoverflow.com/questions/76924239/accelerate-and-bitsandbytes-is-needed-to-install-but-i-did
+- llama.cpp and HF https://huggingface.co/docs/hub/en/gguf-llamacpp
+  - https://llama-cpp-python.readthedocs.io/en/latest/
+- haystack llama.cpp https://haystack.deepset.ai/integrations/llama_cpp
