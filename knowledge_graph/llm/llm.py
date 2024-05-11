@@ -39,7 +39,7 @@ class LLM:
             model=MODEL_ID,
             model_kwargs={
                 "torch_dtype": torch.float16,
-                "quantization_config": {"load_in_4bit": True},
+                # "quantization_config": {"load_in_4bit": True},  ## Requires CUDA
                 "low_cpu_mem_usage": True,
             },
             device=self.device,
