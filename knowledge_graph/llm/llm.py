@@ -6,6 +6,7 @@ import bentoml
 import transformers
 import torch
 from pydantic import BaseModel, ConfigDict
+from haystack_integrations.components.generators.llama_cpp import LlamaCppGenerator
 
 
 MODEL_ID = "meta-llama/Meta-Llama-3-8B-Instruct"
@@ -28,8 +29,41 @@ class LLMOutput(BaseModel):
     answer: str
 
 
+@bentoml.service(name="llmcpp")
+class LLMCPP:
+    """
+    Run LLM using llama.cpp
+    ```
+    wget https://huggingface.co/reach-vb/llama-3-8b-Q8_0-GGUF/resolve/main/llama-3-8b.Q8_0.gguf?download=true -O llama-3-8b.Q8_0.gguf
+    ```
+
+    based on https://haystack.deepset.ai/integrations/llama_cpp
+    """
+
+    def __init__(self) -> None:
+        self.generator = LlamaCppGenerator(
+            model="llama-3-8b.Q8_0.gguf",
+            # n_ctx=512,
+            # n_batch=128,
+            # model_kwargs={"n_gpu_layers": -1},
+            # generation_kwargs={"max_tokens": 128, "temperature": 0.1},
+        )
+        self.generator.warm_up()
+
+    @bentoml.api(route="/ask", input_spec=LLMInput)
+    async def embed(self, **kwargs) -> LLMOutput:
+        """Embed text.
+
+        Pass it as **kwargs + input_spec so that the main payload becomes directly the pydantic model
+        """
+        input_ = LLMInput(**kwargs)
+        result = self.generator.run(input_.query)
+        print(result)
+        return LLMOutput(answer=result["replies"][0])
+
+
 @bentoml.service(name="llm")
-class LLM:
+class LLMInstruct:
     """Transformer service for embeddings"""
 
     def __init__(self) -> None:
@@ -72,4 +106,5 @@ class LLM:
             temperature=0.6,
             top_p=0.9,
         )
+        print(output)
         return LLMOutput(answer=output)
