@@ -11,6 +11,7 @@ python:
     - transformers~=4.40
     - pydantic~=2.7
     - accelerate
+    - bitsandbytes
 api_server:
   http:
     port: 3001
