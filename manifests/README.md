@@ -44,6 +44,7 @@
 Host lima
   Hostname 192.168.1.203
   User pere
+  LocalForward 9999 localhost:8888   # jupyterlab
   LocalForward 9888 localhost:8080   # argocd
   LocalForward 9889 localhost:10443  # dashboard-proxy
   LocalForward 9890 localhost:8081   # nexus
@@ -55,6 +56,10 @@ Host lima
 Then `ssh lima`
 
 # AI Lab setup
+
+## Start server without logging
+
+- [Automatic login](https://ostechnix.com/ubuntu-automatic-login/)
 
 ## Apply apps
 

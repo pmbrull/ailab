@@ -8,7 +8,7 @@ import torch
 from pydantic import BaseModel, ConfigDict
 
 
-MODEL_ID = "meta-llama/Meta-Llama-3-8B"
+MODEL_ID = "meta-llama/Meta-Llama-3-8B-Instruct"
 HF_TOKEN_KEY = "HF_TOKEN"
 
 
@@ -37,8 +37,12 @@ class LLM:
         self.pipeline = transformers.pipeline(
             "text-generation",
             model=MODEL_ID,
-            model_kwargs={"torch_dtype": torch.bfloat16},
-            device_map=self.device,
+            model_kwargs={
+                "torch_dtype": torch.float16,
+                "quantization_config": {"load_in_4bit": True},
+                "low_cpu_mem_usage": True,
+            },
+            device=self.device,
             token=os.getenv(HF_TOKEN_KEY),
         )
 
