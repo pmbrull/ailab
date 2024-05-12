@@ -1,4 +1,4 @@
-service: "llm:LLM"
+service: "llm:llmcpp"
 description: Embedding service using Sentence Transformers
 labels:
   owner: ailab
@@ -11,7 +11,6 @@ python:
     - transformers~=4.40
     - pydantic~=2.7
     - accelerate
-    - bitsandbytes
 api_server:
   http:
     port: 3001
@@ -21,3 +20,4 @@ envs:
 docker:
   python_version: 3.11
   # base_image: if we want to have a common bentoML base image for all our services
+  dockerfile_template: "./Dockerfile.template"
