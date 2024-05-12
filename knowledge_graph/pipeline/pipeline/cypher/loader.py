@@ -73,6 +73,18 @@ class CypherLoader:
         """
         self.cypher_write_query(query)
 
+    def add_index(self, dimensions: int, similarity_function: str) -> None:
+        """Add the index to the nodes"""
+        query = """
+        CREATE VECTOR INDEX `embeddings` IF NOT EXISTS
+          FOR n ON (n.embedding)
+          OPTIONS {indexConfig: {
+           `vector.dimensions`: $dimensions,
+           `vector.similarity_function`: $similarity_function
+          }}
+        """
+        self.cypher_write_query(query, dimensions=dimensions, similarity_function=similarity_function)
+
     def create(self, entities: list[Any]):
         """Create the entity in Neo4J"""
         query = self.create_batch_query(entities)

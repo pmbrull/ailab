@@ -14,6 +14,11 @@ def run() -> None:
     """Run the workflow"""
     loader = OMCypherLoader(CONFIG)
     loader.load()
+    # TODO: How to index all nodes?
+    # loader.index(
+    #     dimensions=384,
+    #     similarity_function="cosine",
+    # )
 
 
 if __name__ == "__main__":

@@ -73,3 +73,7 @@ class OMCypherLoader:
             except StopIteration:
                 self.cypher.commit_relationships()
         self.cypher.add_embeddings()
+
+    def index(self, dimensions: int, similarity_function: str) -> None:
+        """Add index to the nodes"""
+        self.cypher.add_index(dimensions, similarity_function)
