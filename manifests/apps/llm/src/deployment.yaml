@@ -17,7 +17,7 @@ spec:
           app.kubernetes.io/name: llm
     spec:
       containers:
-        - image: localhost:8082/docker-private/llmcpp:5fsmkbaqn2y7d2yb
+        - image: localhost:8082/docker-private/llmcpp:cick3fqqoky7d2yb
           name: llm
           ports:
             - name: api
