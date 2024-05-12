@@ -2,5 +2,7 @@
 {% block SETUP_BENTO_COMPONENTS %}
 {{ super() }}
 WORKDIR /llm
-RUN wget https://huggingface.co/reach-vb/llama-3-8b-Q8_0-GGUF/resolve/main/llama-3-8b.Q8_0.gguf -O llama-3-8b.Q8_0.gguf
+RUN apt -qq update \
+  && apt install -qq wget -y \
+  && wget https://huggingface.co/reach-vb/llama-3-8b-Q8_0-GGUF/resolve/main/llama-3-8b.Q8_0.gguf -O llama-3-8b.Q8_0.gguf
 {% endblock %}

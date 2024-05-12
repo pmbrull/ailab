@@ -1,4 +1,4 @@
-service: "llm:llmcpp"
+service: "llm:LLMCPP"
 description: Embedding service using Sentence Transformers
 labels:
   owner: ailab
@@ -10,6 +10,8 @@ python:
     - torch~=2.2
     - transformers~=4.40
     - pydantic~=2.7
+    - llama-cpp-python
+    - llama-cpp-haystack
     - accelerate
 envs:
   - name: "HF_TOKEN"
