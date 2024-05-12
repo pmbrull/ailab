@@ -15,6 +15,6 @@ build:  ## Build the docker images
 
 .PHONY: push
 push:  ## Push the docker images
-	@BENTO_VERSION=$$(bentoml get llm:latest -o json | jq -r ".version"); \
-	    docker tag "llm:$$BENTO_VERSION" "localhost:8082/docker-private/llm:$$BENTO_VERSION"; \
-	    docker push "localhost:8082/docker-private/llm:$$BENTO_VERSION"
+	@BENTO_VERSION=$$(bentoml get llmcpp:latest -o json | jq -r ".version"); \
+	    docker tag "llmcpp:$$BENTO_VERSION" "localhost:8082/docker-private/llmcpp:$$BENTO_VERSION"; \
+	    docker push "localhost:8082/docker-private/llmcpp:$$BENTO_VERSION"
