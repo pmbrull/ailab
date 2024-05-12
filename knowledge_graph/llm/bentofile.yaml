@@ -11,9 +11,6 @@ python:
     - transformers~=4.40
     - pydantic~=2.7
     - accelerate
-api_server:
-  http:
-    port: 3001
 envs:
   - name: "HF_TOKEN"
     value: ${HF_TOKEN}
