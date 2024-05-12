@@ -34,7 +34,7 @@ class LLMCPP:
     """
     Run LLM using llama.cpp
     ```
-    wget https://huggingface.co/reach-vb/llama-3-8b-Q8_0-GGUF/resolve/main/llama-3-8b.Q8_0.gguf?download=true -O llama-3-8b.Q8_0.gguf
+    wget https://huggingface.co/reach-vb/llama-3-8b-Q8_0-GGUF/resolve/main/llama-3-8b.Q8_0.gguf?download=true -O /llm/llama-3-8b.Q8_0.gguf
     ```
 
     based on https://haystack.deepset.ai/integrations/llama_cpp
@@ -42,7 +42,7 @@ class LLMCPP:
 
     def __init__(self) -> None:
         self.generator = LlamaCppGenerator(
-            model="llama-3-8b.Q8_0.gguf",
+            model="/llm/llama-3-8b.Q8_0.gguf",
             n_ctx=512,
             n_batch=128,
             model_kwargs={"n_gpu_layers": -1},
