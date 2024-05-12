@@ -58,7 +58,6 @@ class LLMCPP:
         """
         input_ = LLMInput(**kwargs)
         result = self.generator.run(input_.query)
-        print(result)
         return LLMOutput(answer=result["replies"][0])
 
 
