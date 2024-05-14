@@ -43,10 +43,10 @@ class LLMCPP:
     def __init__(self) -> None:
         self.generator = LlamaCppGenerator(
             model="/llm/llama-3-8b.Q8_0.gguf",
-            n_ctx=512,
+            n_ctx=4096,
             n_batch=128,
             model_kwargs={"n_gpu_layers": -1},
-            generation_kwargs={"max_tokens": 128, "temperature": 0.8},
+            generation_kwargs={"max_tokens": 2048, "temperature": 0},
         )
         self.generator.warm_up()
 

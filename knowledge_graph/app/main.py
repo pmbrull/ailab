@@ -3,6 +3,8 @@
 from langchain.chains import GraphCypherQAChain
 from langchain.prompts import PromptTemplate
 
+# from langchain_community.graphs import MemgraphGraph
+from llm import CustomLLM
 from memgraph import MemgraphGraph
 
 graph = MemgraphGraph(url="bolt://localhost:9896", username="neo4j", password="neo4jneo4j")
@@ -41,6 +43,7 @@ CYPHER_QA_PROMPT = PromptTemplate(input_variables=["context", "question"], templ
 
 if __name__ == "__main__":
     chain = GraphCypherQAChain.from_llm(
+        llm=CustomLLM(),
         graph=graph,
         verbose=True,
         cypher_prompt=CYPHER_GENERATION_PROMPT,

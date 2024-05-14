@@ -9,13 +9,15 @@ name = "ailab-kg-app"
 version = "0.0.1"
 authors = [{ name = "pmbrull" }]
 description = "ailab knowledge graph pipeline"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 
 dependencies = [
     "pydantic~=1.10",
     "neo4j",
     "langchain~=0.1",
     "langchain-community",
+    "httpx",
+    "gqlalchemy",
 ]
 
 [project.optional-dependencies]

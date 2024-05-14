@@ -2,6 +2,7 @@
 
 from typing import Any
 
+import httpx
 from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
 
@@ -32,6 +33,8 @@ class CustomLLM(LLM):
         Returns:
             The model output as a string. Actual completions SHOULD NOT include the prompt.
         """
+        res = httpx.post("http://localhost:9894/ask", data={"query": prompt})
+        return res.json()["answer"]
 
     @property
     def _llm_type(self) -> str:

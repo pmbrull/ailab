@@ -18,7 +18,7 @@ class MemgraphGraph(Neo4jGraph):
 
     def __init__(self, url: str, username: str, password: str, database: str = "memgraph") -> None:
         """Create a new Memgraph wrapper"""
-        # super().__init__(url, username, password, database)
+        super().__init__(url, username, password, database)
         self._driver = neo4j.GraphDatabase.driver(url, auth=(username, password))
         self._database = database
         self.schema = None
@@ -30,6 +30,7 @@ class MemgraphGraph(Neo4jGraph):
 
     def query(self, query: str, params: dict | None = None) -> list[dict[str, Any]]:
         """Execute a query"""
+        # print(query, params)
         with self._driver.session(database=self._database) as session:
             try:
                 data = session.run(query, params)
@@ -37,11 +38,6 @@ class MemgraphGraph(Neo4jGraph):
                 return [record.data() for record in data][:50]
             except CypherSyntaxError as err:
                 raise ValueError(f"Generated Cypher Statement is not valid: {err}")
-
-    @property
-    def get_schema(self) -> str:
-        """Return the schema"""
-        return self.schema
 
     def refresh_schema(self) -> None:
         """Refresh the schema"""
