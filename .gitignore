@@ -8,3 +8,5 @@ __pycache__/
 *.pyc
 *.gguf
 */data/*
+.ruff_cache/
+build/

@@ -52,6 +52,8 @@ Host lima
   LocalForward 9892 localhost:7474   # neo4j http (browser)
   LocalForward 9893 localhost:7687   # neo4j bolt
   LocalForward 9894 localhost:3001   # llm
+  LocalForward 9895 localhost:7444   # memgraph http
+  LocalForward 9896 localhost:7688   # memgraph bolt
 ```
 
 Then `ssh lima`
@@ -83,6 +85,8 @@ k apply -n argocd -f application.yaml
    microk8s kubectl port-forward svc/neo-embedding -n knowledge-graph 7474:7474 & \
    microk8s kubectl port-forward svc/neo-embedding -n knowledge-graph 7687:7687 & \
    microk8s kubectl port-forward svc/llm -n knowledge-graph 3001:3000 & \
+   microk8s kubectl port-forward svc/memgraph -n knowledge-graph 7444:7444 & \
+   microk8s kubectl port-forward svc/memgraph -n knowledge-graph 7688:7687 & \
    microk8s dashboard-proxy &
    ```
 2. `chmod +x expose.sh`

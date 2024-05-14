@@ -38,6 +38,7 @@ class CypherNodes(CypherBase):
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
+                href: '{entity.href.__root__}',
                 type: '{entity.teamType.value}'
                 {self._add_description(entity)}
             }})
@@ -51,6 +52,7 @@ class CypherNodes(CypherBase):
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
+                href: '{entity.href.__root__}',
                 email: '{entity.email.__root__}'
                 {self._add_description(entity)}
             }})
@@ -65,6 +67,7 @@ class CypherNodes(CypherBase):
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
+                href: '{entity.href.__root__}',
                 mutuallyExclusive: '{entity.mutuallyExclusive}',
                 provider: '{entity.provider.value}',
                 disabled: {str(entity.disabled).lower() if entity.disabled is not None else 'false'},
@@ -87,6 +90,7 @@ class CypherNodes(CypherBase):
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{fqn}',
                 displayName: '{entity.displayName or entity.name.__root__}',
+                href: '{entity.href.__root__}',
                 mutuallyExclusive: '{entity.mutuallyExclusive}',
                 provider: '{entity.provider.value}',
                 disabled: {str(entity.disabled).lower() if entity.disabled is not None else 'false'},
@@ -105,18 +109,20 @@ class CypherNodes(CypherBase):
                 name: '{entity.name.__root__}',
                 fullyQualifiedName: '{entity.fullyQualifiedName.__root__}',
                 displayName: '{entity.displayName or entity.name.__root__}',
+                href: '{entity.href.__root__}',
                 serviceType: '{entity.serviceType.value}'
                 {self._add_description(entity)}
             }})
             """
 
-    def _add_cols_rec(self, col: Column, parent_label: str, create: list[str]):
+    def _add_cols_rec(self, col: Column, parent_label: str, create: list[str], table: Table):
         """Add col and its parent"""
         create.append(f"""
             CREATE ({self._get_fqn(col)}:Column {{
                 name: '{col.name.__root__}',
                 fullyQualifiedName: '{col.fullyQualifiedName.__root__}',
                 displayName: '{col.displayName or col.name.__root__}',
+                href: '{table.href.__root__}',
                 dataType: '{col.dataType.value}',
                 dataTypeDisplay: '{col.dataTypeDisplay}',
                 jsonSchema: '{col.jsonSchema}'
@@ -125,7 +131,7 @@ class CypherNodes(CypherBase):
             CREATE ({parent_label})-[:CONTAINS]->({self._get_fqn(col)})
         """)
         for child in col.children or []:
-            self._add_cols_rec(col=child, parent_label=self._get_fqn(col), create=create)
+            self._add_cols_rec(col=child, parent_label=self._get_fqn(col), create=create, table=table)
 
     @create_query.register
     def _(self, entity: Table) -> str:
@@ -145,6 +151,6 @@ class CypherNodes(CypherBase):
             """
         ]
         for col in entity.columns:
-            self._add_cols_rec(col=col, parent_label=self._get_unique_id(entity), create=create)
+            self._add_cols_rec(col=col, parent_label=self._get_unique_id(entity), create=create, table=entity)
 
         return "\n".join(create)
