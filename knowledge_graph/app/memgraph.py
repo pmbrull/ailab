@@ -1,10 +1,12 @@
 """Memgraph client for interacting with Memgraph database."""
 
-from typing import Any
-
-import neo4j
 from langchain.graphs import Neo4jGraph
-from neo4j.exceptions import CypherSyntaxError
+
+SCHEMA_QUERY_RAW = """
+CALL llm_util.schema('raw')
+YIELD *
+RETURN *
+"""
 
 SCHEMA_QUERY = """
 CALL llm_util.schema()
@@ -14,32 +16,55 @@ RETURN *
 
 
 class MemgraphGraph(Neo4jGraph):
-    """Memgraph wrapper for graph ops"""
+    """Memgraph wrapper for graph operations.
 
-    def __init__(self, url: str, username: str, password: str, database: str = "memgraph") -> None:
-        """Create a new Memgraph wrapper"""
-        super().__init__(url, username, password, database)
-        self._driver = neo4j.GraphDatabase.driver(url, auth=(username, password))
-        self._database = database
-        self.schema = None
+    *Security note*: Make sure that the database connection uses credentials
+        that are narrowly-scoped to only include necessary permissions.
+        Failure to do so may result in data corruption or loss, since the calling
+        code may attempt commands that would result in deletion, mutation
+        of data if appropriately prompted or reading sensitive data if such
+        data is present in the database.
+        The best way to guard against such negative outcomes is to (as appropriate)
+        limit the permissions granted to the credentials used with this tool.
 
-        try:
-            self._driver.verify_connectivity()
-        except neo4j.exceptions.ServiceUnavailable as err:
-            raise ValueError(f"Unable to connect to Memgraph due to {err}")
+        See https://python.langchain.com/docs/security for more information.
+    """
 
-    def query(self, query: str, params: dict | None = None) -> list[dict[str, Any]]:
-        """Execute a query"""
-        # print(query, params)
-        with self._driver.session(database=self._database) as session:
-            try:
-                data = session.run(query, params)
-                # Hard list of 50 results
-                return [record.data() for record in data][:50]
-            except CypherSyntaxError as err:
-                raise ValueError(f"Generated Cypher Statement is not valid: {err}")
+    def __init__(self, url: str, username: str, password: str, *, database: str = "memgraph") -> None:
+        """Create a new Memgraph graph wrapper instance."""
+        super().__init__(url, username, password, database=database)
 
     def refresh_schema(self) -> None:
-        """Refresh the schema"""
+        """Refreshes the Memgraph graph schema information."""
+        db_structured_schema = self.query(SCHEMA_QUERY_RAW)[0].get("schema")
+        assert db_structured_schema is not None
+        self.structured_schema = db_structured_schema
+
+        # Format node properties
+        formatted_node_props = []
+
+        for node_name, properties in db_structured_schema["node_props"].items():
+            formatted_node_props.append(f"Node name: '{node_name}', Node properties: {properties}\n")
+
+        # Format relationship properties
+        formatted_rel_props = []
+        for rel_name, properties in db_structured_schema["rel_props"].items():
+            formatted_rel_props.append(f"Relationship name: '{rel_name}', " f"Relationship properties: {properties}\n")
+
+        # Format relationships
+        formatted_rels = [
+            f"(:{rel['start']})-[:{rel['type']}]->(:{rel['end']})" for rel in db_structured_schema["relationships"]
+        ]
+
+        self.schema = "\n".join(
+            [
+                "Node properties are the following:",
+                *formatted_node_props,
+                "Relationship properties are the following:",
+                *formatted_rel_props,
+                "The relationships are the following:",
+                *formatted_rels,
+            ]
+        )
+
         self.schema = self.query(SCHEMA_QUERY)[0].get("schema")
-        # print(self.schema)

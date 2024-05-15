@@ -31,3 +31,36 @@ Microchip webinar https://app.livestorm.co/memgraph/microchip-optimizes-chatbot-
 - LangChain has added Cypher Search - https://towardsdatascience.com/langchain-has-added-cypher-search-cb9d821120d5
 - LangChain Cypher Search: Tips & Tricks - https://medium.com/neo4j/langchain-cypher-search-tips-tricks-f7c9e9abca4d
 - Prompt Engineering Guide - https://www.promptingguide.ai/
+- Building a Backend for ODIN and RUNE: How to Make a Knowledge Extraction Engine: https://memgraph.com/blog/building-backend-odin-rune-knowledge-extraction-engine
+- Cosine Similarity https://memgraph.com/blog/cosine-similarity-python-scikit-learn
+  - Chroma DB? https://github.com/chroma-core/chroma
+- Query Agent? https://github.com/memgraph/bor/blob/main/core/knowledgebase/QueryAgents.py
+- Text Search https://memgraph.com/docs/configuration/text-search
+
+
+1. We can create embeddings to all our nodes https://memgraph.com/docs/advanced-algorithms/available-algorithms/node2vec
+    ```cypher
+    CALL node2vec.set_embeddings(True, 2.0, 0.5, 4, 5, 384) 
+    YIELD nodes, embeddings
+    RETURN nodes, embeddings;
+    ```
+
+Review this implementation? https://python.langchain.com/v0.1/docs/integrations/vectorstores/neo4jvector/
+Example in Neo4J Haystack https://github.com/prosto/neo4j-haystack/blob/main/examples/rag_pipeline.py
+- Neo4j implementation https://github.com/prosto/neo4j-haystack/blob/main/src/neo4j_haystack/document_stores/neo4j_store.py#L70
+
+https://github.com/BaranziniLab/KG_RAG
+
+## Just use Postgres?
+
+https://christophergs.com/blog/production-rag-with-postgres-vector-store-open-source-models
+
+- pg_vector https://news.ycombinator.com/item?id=39613669
+- RAG openAI https://chatgpt.com/share/435a3855-bf02-4791-97b3-4531b8e925ec?oai-dm=1
+https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html#postgresql-extensions-16x 
+- https://medium.com/@amodwrites/the-future-of-genai-with-kg-enhanced-rag-systems-c34928427453
+- 
+
+## RAG
+
+https://newsletter.pragmaticengineer.com/p/rag & https://github.com/wordsmith-ai/hello-wordsmith

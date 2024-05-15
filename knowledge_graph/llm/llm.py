@@ -42,7 +42,7 @@ class LLMCPP:
 
     def __init__(self) -> None:
         self.generator = LlamaCppGenerator(
-            model="/llm/llama-3-8b.Q8_0.gguf",
+            model="/Users/pmbrull/llm/llama-3-8b.Q8_0.gguf",
             n_ctx=4096,
             n_batch=128,
             model_kwargs={"n_gpu_layers": -1},

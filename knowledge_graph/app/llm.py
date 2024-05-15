@@ -33,8 +33,9 @@ class CustomLLM(LLM):
         Returns:
             The model output as a string. Actual completions SHOULD NOT include the prompt.
         """
-        res = httpx.post("http://localhost:9894/ask", data={"query": prompt})
-        return res.json()["answer"]
+        res = httpx.post("http://localhost:3001/ask", data={"query": prompt}, timeout=None)
+        json_ = res.json()
+        return json_["answer"]
 
     @property
     def _llm_type(self) -> str:

@@ -2,19 +2,23 @@
 
 from langchain.chains import GraphCypherQAChain
 from langchain.prompts import PromptTemplate
+from langchain_community.llms import Ollama
 
 # from langchain_community.graphs import MemgraphGraph
-from llm import CustomLLM
 from memgraph import MemgraphGraph
 
 graph = MemgraphGraph(url="bolt://localhost:9896", username="neo4j", password="neo4jneo4j")
 
-CYPHER_GENERATION_TEMPLATE = """Task:Generate Cypher statement to query a graph database.
+CYPHER_GENERATION_TEMPLATE = """Task:
+Generate Cypher statement to query a graph database.
+
 Instructions:
 Use only the provided relationship types and properties in the schema.
 Do not use any other relationship types or properties that are not provided.
+
 Schema:
 {schema}
+
 Note: Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than for you to construct a Cypher statement.
 Do not include any text except the generated Cypher statement in your response.
@@ -43,13 +47,18 @@ CYPHER_QA_PROMPT = PromptTemplate(input_variables=["context", "question"], templ
 
 if __name__ == "__main__":
     chain = GraphCypherQAChain.from_llm(
-        llm=CustomLLM(),
+        # llm=CustomLLM(),
+        # llm=ChatOpenAI(temperature=0),
+        llm=Ollama(model="llama3", temperature=0),
         graph=graph,
         verbose=True,
         cypher_prompt=CYPHER_GENERATION_PROMPT,
         qa_prompt=CYPHER_QA_PROMPT,
         top_k=50,
+        validate_cypher=True,
     )
 
-    query = "How many tables do we have?"
+    # query = "Where can I find customer data?"
+    query = "Give me tables that contain customer data"
+    # query = "Give me tables that are not owned"
     # print(chain.invoke({"query": query}))
