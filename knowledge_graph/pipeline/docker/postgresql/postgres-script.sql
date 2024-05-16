@@ -1,0 +1,3 @@
+CREATE DATABASE ailab;
+CREATE USER ailab WITH PASSWORD 'password';
+ALTER DATABASE ailab OWNER TO ailab;

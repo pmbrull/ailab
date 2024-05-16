@@ -54,12 +54,12 @@ https://github.com/BaranziniLab/KG_RAG
 ## Just use Postgres?
 
 https://christophergs.com/blog/production-rag-with-postgres-vector-store-open-source-models
-
+RDS supports pgvector https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html#postgresql-extensions-16x
 - pg_vector https://news.ycombinator.com/item?id=39613669
 - RAG openAI https://chatgpt.com/share/435a3855-bf02-4791-97b3-4531b8e925ec?oai-dm=1
 https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html#postgresql-extensions-16x 
 - https://medium.com/@amodwrites/the-future-of-genai-with-kg-enhanced-rag-systems-c34928427453
-- 
+- https://python.langchain.com/v0.1/docs/integrations/memory/postgres_chat_message_history/ to store chat history 
 
 ## RAG
 

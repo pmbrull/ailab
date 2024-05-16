@@ -1,0 +1,2 @@
+\connect ailab
+CREATE EXTENSION VECTOR;
