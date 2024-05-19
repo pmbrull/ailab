@@ -16,6 +16,10 @@ dependencies = [
     "neo4j",
     "pyyaml",
     "openmetadata-ingestion",
+    "haystack-ai",
+    "pgvector-haystack",
+    "ollama-haystack",
+    "sqlalchemy>=1.4.0,<2",
     # "metadata @ file://${PROJECT_ROOT}/../../projects/OpenMetadata/ingestion",  #  uv pip install "/Users/pmbrull/projects/OpenMetadata/ingestion"
 ]
 
@@ -57,3 +61,7 @@ convention = "google"
 
 [tool.codespell]
 skip = ".git,env*,pydantic/v1/*,*.java"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"

@@ -19,6 +19,19 @@ class Neo4JConfig(BaseModel):
     database: str = Field(..., description="Database for the Neo4J connection")
 
 
+class PGConfig(BaseModel):
+    """Postgres settings"""
+
+    host: str = Field(..., description="Host and port of the Postgres database connection")
+    user: str = Field(..., description="User for the Postgres database connection")
+    password: str = Field(..., description="Password for the Postgres connection")
+    database: str = Field(..., description="Database for the Postgres connection")
+
+    def uri(self) -> str:
+        """Prep the URI"""
+        return f"postgresql://{self.user}:{self.password}@{self.host}/{self.database}"
+
+
 class OMConfig(BaseModel):
     """OpenMetadata settings"""
 
@@ -26,11 +39,19 @@ class OMConfig(BaseModel):
     jwt_token: str = Field(..., description="JWT token for the OpenMetadata API")
 
 
+class LLMConfig(BaseModel):
+    """LLM settings"""
+
+    embedding_model_uri: str = Field(..., description="URI of the LLM model")
+
+
 class Config(BaseModel):
     """Pipeline settings"""
 
     neo4j: Neo4JConfig
+    pg: PGConfig
     om: OMConfig
+    llm: LLMConfig
 
 
 def load_config(path: Path) -> Config:

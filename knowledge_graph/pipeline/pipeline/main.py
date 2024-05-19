@@ -2,9 +2,6 @@
 
 import logging
 
-from pipeline.config import CONFIG
-from pipeline.ometa import OMCypherLoader
-
 METADATA_LOGGER = "ailab"
 BASE_LOGGING_FORMAT = "[%(asctime)s] %(levelname)-8s {%(name)s:%(module)s:%(lineno)d} - %(message)s"
 logging.basicConfig(format=BASE_LOGGING_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
@@ -12,13 +9,9 @@ logging.basicConfig(format=BASE_LOGGING_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 
 def run() -> None:
     """Run the workflow"""
-    loader = OMCypherLoader(CONFIG)
-    loader.load()
-    # TODO: How to index all nodes?
-    # loader.index(
-    #     dimensions=384,
-    #     similarity_function="cosine",
-    # )
+    # loader = OMCypherLoader(CONFIG)
+    # loader = PGLoader(CONFIG)
+    # loader.load()
 
 
 if __name__ == "__main__":

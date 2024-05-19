@@ -7,3 +7,13 @@ neo4j:
 om:
   uri: ${OM_URI}
   jwt_token: ${OM_JWT_TOKEN}
+
+pg:
+  host: ${PG_HOST}
+  port: ${PG_PORT}
+  user: ${PG_USER}
+  password: ${PG_PASSWORD}
+  database: ${PG_DATABASE}
+
+llm:
+  embedding_model_uri: ${LLM_EMBEDDING_MODEL_URI}
