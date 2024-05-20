@@ -1,9 +1,9 @@
 """Embeddings API"""
 
 import bentoml
-import ollama
 import torch
 from pydantic import BaseModel, ConfigDict, Field
+from sentence_transformers import SentenceTransformer
 
 
 class TransformerInput(BaseModel):
@@ -28,7 +28,10 @@ class Transformer:
 
     def __init__(self) -> None:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        # self.model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device=self.device)
+        dimensions = 1024
+        self.model = SentenceTransformer(
+            "mixedbread-ai/mxbai-embed-large-v1", device=self.device, truncate_dim=dimensions
+        )
         # ollama.pull("mxbai-embed-large")
 
     @bentoml.api(route="/embed", input_spec=TransformerInput)
@@ -37,9 +40,10 @@ class Transformer:
 
         Pass it as **kwargs + input_spec so that the main payload becomes directly the pydantic model
         """
+        query = "Represent this sentence for searching relevant passages: {text}"
         input_ = TransformerInput(**kwargs)
-        res = ollama.embeddings(
-            model="mxbai-embed-large",
-            prompt=input_.text,
-        )
-        return TransformerOutput(embedding=res.get("embedding"))
+        # res = ollama.embeddings(
+        #    model="mxbai-embed-large",
+        #    prompt=input_.text,
+        # )
+        return TransformerOutput(embedding=self.model.encode(query.format(text=input_.text)))

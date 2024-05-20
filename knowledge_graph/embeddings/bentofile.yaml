@@ -11,8 +11,8 @@ python:
     - torch~=2.2
     - sentence-transformers~=2.7
     - pydantic~=2.7
-    - ollama
+    # - ollama
 docker:
   python_version: 3.11
-  setup_script: "./setup_ollama.sh"
+  # setup_script: "./setup_ollama.sh"
   # base_image: if we want to have a common bentoML base image for all our services
