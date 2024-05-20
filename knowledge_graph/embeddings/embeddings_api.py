@@ -1,10 +1,9 @@
 """Embeddings API"""
 
 import bentoml
-import torch
-from numpy import ndarray
-from pydantic import BaseModel, ConfigDict, Field
 import ollama
+import torch
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TransformerInput(BaseModel):
@@ -20,7 +19,7 @@ class TransformerOutput(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    embedding: ndarray = Field(..., description="embedded text")
+    embedding: list[float] = Field(..., description="embedded text")
 
 
 @bentoml.service(name="transformer")
@@ -30,6 +29,7 @@ class Transformer:
     def __init__(self) -> None:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         # self.model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", device=self.device)
+        # ollama.pull("mxbai-embed-large")
 
     @bentoml.api(route="/embed", input_spec=TransformerInput)
     async def embed(self, **kwargs) -> TransformerOutput:

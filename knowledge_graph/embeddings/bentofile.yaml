@@ -5,6 +5,7 @@ labels:
   project: knowledge-graph
 include:
   - "*.py"
+  - "*.sh"
 python:
   packages:
     - torch~=2.2
@@ -13,5 +14,5 @@ python:
     - ollama
 docker:
   python_version: 3.11
+  setup_script: "./setup_ollama.sh"
   # base_image: if we want to have a common bentoML base image for all our services
-  dockerfile_template: "./Dockerfile.template"

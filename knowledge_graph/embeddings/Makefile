@@ -7,11 +7,11 @@ help:
 
 .PHONY: serve
 serve:  ## Build the docker images
-	@bentoml serve embeddings_api:transformer
+	@bentoml serve embeddings_api:Transformer --port 5000
 
 .PHONY: build
 build:  ## Build the docker images
-	@cd embeddings && bentoml build -f bentofile.yaml --containerize
+	@bentoml build -f bentofile.yaml --containerize
 
 .PHONY: push
 push:  ## Push the docker images
