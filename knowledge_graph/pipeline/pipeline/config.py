@@ -43,6 +43,10 @@ class LLMConfig(BaseModel):
     """LLM settings"""
 
     embedding_model_uri: str = Field(..., description="URI of the LLM model")
+    embedding_model_dim: int = Field(..., description="Dimension of the embedding model")
+    search_strategy: str = Field("hnsw", description="Search strategy for the embeddings")
+    vector_function: str = Field("cosine_similarity", description="Vector function for the embeddings")
+    table_name: str = Field("embeddings", description="Table name for the embeddings")
 
 
 class Config(BaseModel):

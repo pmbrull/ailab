@@ -38,7 +38,7 @@ ENTITIES = (
 
 
 CONTENT_TEMPLATE = """
-The {type} called "{name}" contains the following information: "{description}"
+The {type} named {name} contains the following information: "{description}".
 {children}
 
 It is owner by {owner}.
@@ -122,7 +122,7 @@ class CustomProducer:
     def create_content(self, entity) -> str:
         """Create the string content of an entity"""
         return CONTENT_TEMPLATE.format(
-            type=entity.__class__.__name__,
+            type=entity.__class__.__name__.lower(),
             name=entity.displayName or entity.name.__root__,
             description=entity.description.__root__ if entity.description else "None",
             owner=self.create_owner_content(entity.owner)

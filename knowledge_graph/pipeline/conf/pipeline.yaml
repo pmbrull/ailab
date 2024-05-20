@@ -17,3 +17,7 @@ pg:
 
 llm:
   embedding_model_uri: ${LLM_EMBEDDING_MODEL_URI}
+  embedding_model_dim: 1024
+  search_strategy: hsnw
+  vector_function: cosine_similarity
+  table_name: embeddings

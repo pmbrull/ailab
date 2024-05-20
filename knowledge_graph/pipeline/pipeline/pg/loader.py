@@ -10,10 +10,6 @@ from pipeline.config import Config
 from pipeline.pg.embedder import CustomDocumentEmbedder
 from pipeline.pg.producer import CustomProducer
 
-SEARCH_STRATEGY = "hnsw"
-VECTOR_FUNCTION = "cosine_similarity"
-TABLE_NAME = "embeddings"
-
 
 class PGLoader:
     """Load data into Postgres"""
@@ -24,12 +20,12 @@ class PGLoader:
 
         self.document_store = PgvectorDocumentStore(
             connection_string=Secret.from_token(config.pg.uri()),
-            table_name=TABLE_NAME,
-            embedding_dimension=1024,
-            vector_function=VECTOR_FUNCTION,
+            table_name=config.llm.table_name,
+            embedding_dimension=config.llm.embedding_model_dim,
+            vector_function=config.llm.vector_function,
             recreate_table=self.nuke,
             hnsw_recreate_index_if_exists=self.nuke,
-            search_strategy=SEARCH_STRATEGY,
+            search_strategy=config.llm.search_strategy,
         )
 
         self.index = Pipeline()

@@ -14,7 +14,7 @@ logging.basicConfig(format=BASE_LOGGING_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 def run() -> None:
     """Run the workflow"""
     # loader = OMCypherLoader(CONFIG)
-    reload = True
+    reload = False
     if reload:
         loader = PGLoader(CONFIG, nuke=True)
         loader.load()
@@ -23,7 +23,9 @@ def run() -> None:
 
     # question = "How many tables do we have?"
     # The answer to this is based on the top_k retrieved documents. We'll need to add a summary context document.
-    question = "What is the description of the Table dim_customer?"
+    # question = "What information can I find in raw_customer?"
+    # question = "Where can I find customer information"
+    question = "What is the purpose of the raw_customer table?"
     answer = asker.ask(question)
     logging.info(answer)
     # print(answer)

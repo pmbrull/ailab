@@ -12,9 +12,14 @@ from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
 from pipeline.config import Config
 from pipeline.pg.embedder import CustomEmbedder
 
-SEARCH_STRATEGY = "hnsw"
-VECTOR_FUNCTION = "cosine_similarity"
-TABLE_NAME = "embeddings"
+"""
+The documents describe assets in a Data Platform and have the following structure:
+- type: Type of the asset. 
+- name: Name of the asset. 
+- description: Description of the asset.
+- owner: Team or user that owns the asset.
+- domain: Domain of the asset.
+"""
 
 
 TEMPLATE = """
@@ -26,15 +31,11 @@ Make the answer sound as a response to the question.
 Do not mention that you based the results on the given information.
 If the provided information is empty, say that you don't know the answer.
 
-The documents describe assets in a Data Platform and have the following structure:
-- type: Type of the asset. 
-- name: Name of the asset. 
-- description: Description of the asset.
-- owner: Team or user that owns the asset.
-- domain: Domain of the asset.
-
 Use the description of the assets, its type and any other relevant information about their children to
-answer the questions.
+answer the questions. No other information should be used.
+
+If you are asked about an asset, in the response provide a link to the asset. The link can be found in he asset href field.
+When answering, give information about the asset owner, domain and tags, if they exist.
 
 Information:
 {% for document in documents %}
@@ -53,12 +54,12 @@ class PGAsker:
 
         self.document_store = PgvectorDocumentStore(
             connection_string=Secret.from_token(config.pg.uri()),
-            table_name=TABLE_NAME,
-            embedding_dimension=1024,
-            vector_function=VECTOR_FUNCTION,
+            table_name=config.llm.table_name,
+            embedding_dimension=config.llm.embedding_model_dim,
+            vector_function=config.llm.vector_function,
             recreate_table=False,
             hnsw_recreate_index_if_exists=False,
-            search_strategy=SEARCH_STRATEGY,
+            search_strategy=config.llm.search_strategy,
         )
 
         self.query = Pipeline()
@@ -82,7 +83,7 @@ class PGAsker:
         return self.query.run(
             {
                 "embedder": {"text": question},
-                "retriever": {"top_k": 10},
+                "retriever": {"top_k": 3},
                 "prompt_builder": {"query": question},
                 "answer_builder": {"query": question},
             }
