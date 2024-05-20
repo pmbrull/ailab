@@ -10,6 +10,8 @@ python:
     - torch~=2.2
     - sentence-transformers~=2.7
     - pydantic~=2.7
+    - ollama
 docker:
   python_version: 3.11
   # base_image: if we want to have a common bentoML base image for all our services
+  dockerfile_template: "./Dockerfile.template"

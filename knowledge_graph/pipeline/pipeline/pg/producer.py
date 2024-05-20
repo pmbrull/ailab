@@ -1,5 +1,7 @@
 """Converter pipeline"""
 
+from functools import singledispatchmethod
+
 from haystack import component
 from haystack.dataclasses import Document
 from metadata.generated.schema.entity.classification.classification import (
@@ -10,7 +12,7 @@ from metadata.generated.schema.entity.data.database import Database
 from metadata.generated.schema.entity.data.databaseSchema import DatabaseSchema
 from metadata.generated.schema.entity.data.glossary import Glossary
 from metadata.generated.schema.entity.data.glossaryTerm import GlossaryTerm
-from metadata.generated.schema.entity.data.table import Table
+from metadata.generated.schema.entity.data.table import Column, Table
 from metadata.generated.schema.entity.services.connections.metadata.openMetadataConnection import (
     AuthProvider,
     OpenMetadataConnection,
@@ -36,18 +38,16 @@ ENTITIES = (
 
 
 CONTENT_TEMPLATE = """
-type: {type}
-name: {name}
-description: {description}
-{owner}
-{tags}
-domain: {domain}
+The {type} called "{name}" contains the following information: "{description}"
+{children}
+
+It is owner by {owner}.
+It is tagged with: {tags}.
+It belongs to the {domain} domain.
 """
 
 OWNER_TEMPLATE = """
-owner:
-    name: {name}
-    type: {type}
+the {type} "{name}"
 """
 
 TAGS_TEMPLATE = """
@@ -92,9 +92,10 @@ class CustomProducer:
                         fields=["*"],
                     )
                     for asset in asset_list:
+                        content = self.create_content(asset)
                         documents.append(
                             Document(
-                                content=self.create_content(asset),
+                                content=content,
                                 id=asset.id.__root__,
                                 meta={"type": entity.__name__},
                             )
@@ -104,20 +105,63 @@ class CustomProducer:
 
         return documents
 
+    def _get_fqn(self, entity) -> str:
+        return f"`{self._clean_str(entity.fullyQualifiedName.__root__)}`"
+
+    @staticmethod
+    def _clean_str(value: str) -> str:
+        """Clean the string for Cypher"""
+        return value.replace("'", "\\'").replace('"', '\\"')
+
     @component.output_types(documents=list[Document])
     def run(self):
         """Load documents from OM and return them as a list of Documents"""
         return {"documents": self._load_documents()}
 
+    @singledispatchmethod
     def create_content(self, entity) -> str:
         """Create the string content of an entity"""
         return CONTENT_TEMPLATE.format(
             type=entity.__class__.__name__,
-            name=entity.name,
-            description=entity.description,
-            owner=self.create_owner_content(entity.owner) if hasattr(entity, "owner") and entity.owner else "None",
-            tags=self.create_tags_content(entity.tags) if hasattr(entity, "tags") and entity.tags else "None",
+            name=entity.displayName or entity.name.__root__,
+            description=entity.description.__root__ if entity.description else "None",
+            owner=self.create_owner_content(entity.owner)
+            if hasattr(entity, "owner") and entity.owner
+            else "owner: None",
+            tags=self.create_tags_content(entity.tags) if hasattr(entity, "tags") and entity.tags else "tags: None",
             domain=entity.domain.name if hasattr(entity, "domain") and entity.domain else "None",
+            children=None,
+        )
+
+    def _add_cols_rec(self, col: Column, parent_label: str, create: list[str], table: Table):
+        """Add col and its parent"""
+        create.append(f"""
+            - column: 
+                - name: {col.displayName or col.name.__root__}
+                - parent: {parent_label}
+                - href: {table.href.__root__}
+                - data type: {col.dataTypeDisplay}
+                - description: {col.description.__root__ if col.description else "None"}
+        """)
+        for child in col.children or []:
+            self._add_cols_rec(col=child, parent_label=self._get_fqn(col), create=create, table=table)
+
+    @create_content.register
+    def _(self, entity: Table) -> str:
+        """Create the string content of a Table"""
+        columns = []
+        for col in entity.columns:
+            self._add_cols_rec(col, entity.fullyQualifiedName.__root__, columns, entity)
+        return CONTENT_TEMPLATE.format(
+            type=entity.__class__.__name__,
+            name=entity.name.__root__,
+            description=entity.description.__root__ if entity.description else "None",
+            owner=self.create_owner_content(entity.owner)
+            if hasattr(entity, "owner") and entity.owner
+            else "owner: None",
+            tags=self.create_tags_content(entity.tags) if hasattr(entity, "tags") and entity.tags else "tags: None",
+            domain=entity.domain.name if hasattr(entity, "domain") and entity.domain else "None",
+            children="\n".join(columns),
         )
 
     def create_owner_content(self, owner: EntityReference) -> str:

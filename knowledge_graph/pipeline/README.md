@@ -91,3 +91,7 @@ CREATE (table)-[:BELONGS_TO]->(domain)
 
 CREATE (dataProduct)-[:CONTAINS]->(table)
 ```
+
+## PGVector
+
+- link documents together somehow? https://github.com/ryogesh/llm-rag-graph/blob/main/example_query.py
