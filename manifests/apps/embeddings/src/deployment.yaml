@@ -17,7 +17,7 @@ spec:
           app.kubernetes.io/name: transformer
     spec:
       containers:
-        - image: localhost:8082/docker-private/transformer:orxzv6awq2y7d2yb
+        - image: localhost:8082/docker-private/transformer:c2kpneawrky7d2yb
           name: transformer
           ports:
             - name: api
